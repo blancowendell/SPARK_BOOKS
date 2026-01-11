@@ -42,7 +42,7 @@ const ReportsPage = () => {
                 return <InventoryMethods />;
             case 'Shared reports':
                 return <SharedReports />;
-            case 'COA Types':
+            // case 'COA Types':
             default:
                 return <ChartOfAccountTypes />;
         }
