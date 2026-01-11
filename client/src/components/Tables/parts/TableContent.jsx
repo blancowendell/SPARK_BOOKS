@@ -1,6 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
-import { Pencil } from "lucide-react";
+import { Pencil, Eye } from "lucide-react";
 import DeleteConfirmButton from "../../Buttons/PopconfirmDelete.jsx";
 
 const TableContent = ({
@@ -9,8 +9,10 @@ const TableContent = ({
   paginatedData,
   onRowClick,
   onEditClick,
+  onViewClick,
   onDeleteClick,
   withEdit = false,
+  withView = false,
   withDelete = false,
   withImage = false,
   renderAvatar,
@@ -69,6 +71,14 @@ const TableContent = ({
                                 onClick={() => onEditClick(row)}
                               >
                                 <Pencil size={16} />
+                              </button>
+                            )}
+                            {withView && (
+                              <button
+                                className="text-green-500 hover:text-green-700"
+                                onClick={() => onViewClick && onViewClick(row)}
+                              >
+                                <Eye size={16} />
                               </button>
                             )}
                             {withDelete && (

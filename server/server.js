@@ -41,6 +41,14 @@ var dashboardRouter = require("./routes/private/dashboard.routes");
 var maintenanceDashboardRouter = require("./routes/private/maintenanceDashboard.routes");
 var securityRouter = require("./routes/private/security.routes");
 
+var masterCoaTypeRouter = require("./routes/private/masterCoaType.routes");
+var masterCoaRouter = require("./routes/private/masterCoa.routes");
+var masterCustomerTypeRouter = require("./routes/private/masterCustomerType.routes");
+var masterVendorTypeRouter = require("./routes/private/masterVendorType.routes");
+var masterCustomerGeneralRouter = require("./routes/private/masterCustomerGeneral.routes");
+var masterVendorGeneralRouter = require("./routes/private/masterVendorGeneral.routes");
+var masterInventoryMethodsRouter = require("./routes/private/masterInventoryMethods.routes");
+var coaRunBalRouter = require("./routes/private/coaRunBal.routes");
 //#endregion
 
 //#region ROUTES PUBLIC
@@ -131,6 +139,14 @@ app.use("/dashboard", dashboardRouter);
 app.use("/maintenance_dashboard", maintenanceDashboardRouter);
 app.use("/security", securityRouter);
 
+app.use("/master_coa_type", masterCoaTypeRouter);
+app.use("/master_coa", masterCoaRouter);
+app.use("/master_customer_type", masterCustomerTypeRouter);
+app.use("/master_vendor_type", masterVendorTypeRouter);
+app.use("/master_customer_general", masterCustomerGeneralRouter);
+app.use("/master_vendor_general", masterVendorGeneralRouter);
+app.use("/master_inventory_methods", masterInventoryMethodsRouter);
+app.use("/coa_run_bal", coaRunBalRouter);
 //#endregion
 
 // 404 handler

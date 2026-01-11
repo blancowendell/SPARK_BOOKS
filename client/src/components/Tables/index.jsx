@@ -17,11 +17,13 @@ const Table = ({
   rowsPerPage = 10,
   withImage = false,
   withEdit = false,
+  withView = false,        // ✅ NEW
   withDelete = false,
   withActions = true,
   dropdownItems = [],
   onItemClick,
   onEditClick,
+  onViewClick,             // ✅ NEW
   onDeleteClick,
   onRowClick,
   customActionsRenderer,
@@ -170,8 +172,10 @@ const Table = ({
         paginatedData={paginatedData}
         onRowClick={onRowClick}
         onEditClick={onEditClick}
+        onViewClick={onViewClick}
         onDeleteClick={onDeleteClick}
         withEdit={withEdit}
+        withView={withView}
         withDelete={withDelete}
         withImage={withImage}
         renderAvatar={renderAvatar}

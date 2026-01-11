@@ -29,7 +29,7 @@ module.exports = {
         me_id: adminEmpId,
         me_first_name: "System",
         me_last_name: STATIC_ROLE.ADMIN,
-        me_email: "admin@5lsolutions.com",
+        me_email: "admin@sample.com",
       },
     ]);
 

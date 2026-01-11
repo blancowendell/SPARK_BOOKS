@@ -136,7 +136,3 @@ module.exports = {
   getAccessType,
   updateAccessType,
 };
-
-router.get("/get-access-type/:accessId", async (req, res) => {});
-
-router.put("/update-access-type/:accessTypeId", async (req, res) => {});

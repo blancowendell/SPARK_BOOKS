@@ -228,7 +228,7 @@ const getEmployee = async (req, res) => {
     mu_status as me_status
     FROM master_employee
     INNER JOIN master_users ON master_employee.me_id = mu_employeeid
-\    INNER JOIN master_access ON master_users.mu_access_id = ma_id
+    INNER JOIN master_access ON master_users.mu_access_id = ma_id
     WHERE me_id = ?`;
 
     SelectParameter(sql, [employeeId], (err, result) => {

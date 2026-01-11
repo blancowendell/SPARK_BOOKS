@@ -25,6 +25,7 @@ const STATUS_LOG = {
   DELETE: "Delete",
   REQUEST: "Request",
 };
+
 exports.STATUS_LOG = STATUS_LOG;
 
 const REQUEST_STATUS = {
@@ -51,3 +52,30 @@ const STATIC_ROLE = {
 };
 
 exports.STATIC_ROLE = STATIC_ROLE;
+
+
+// constants/coaEnums.js
+
+const COA_ACCOUNT_TYPES = [
+  'Asset Accounts',
+  'Liability Accounts',
+  'Equity Accounts',
+  'Revenue Accounts',
+  'COGS Accounts',
+  'Expense Accounts',
+  'Other Accounts'
+];
+
+exports.COA_ACCOUNT_TYPES = COA_ACCOUNT_TYPES;
+
+const COA_SEGMENT_RANGES = [
+  '1000-1999',
+  '2000-2999',
+  '3000-3999',
+  '4000-4999',
+  '5000-5999',
+  '6000-6999',
+  '7000-7999'
+];
+
+exports.COA_SEGMENT_RANGES = COA_SEGMENT_RANGES;
