@@ -65,7 +65,3 @@ const getAccess = async (req, res) => {
 module.exports = {
     getAccess
 }
-
-router.get("/load-access", (req, res) => {
-
-});

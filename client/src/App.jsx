@@ -13,6 +13,8 @@ import Employees from "./pages/Private/Employees";
 import SamplePage from "./pages/Private/SamplePage";
 import ForgotPasswordPage from "./components/Pages/ForgotPassword";
 import "react-toastify/dist/ReactToastify.css";
+import ChartOfAccounts from "./pages/Private/ChartOfAccounts";
+import Maintain from "./pages/Private/Maintain";
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
               <Route path="security" element={<Security />} />
               <Route path="employees" element={<Employees />} />
               <Route path="samplepage" element={<SamplePage />} />
+              <Route path="chartOfAccounts" element={<ChartOfAccounts />} />
+              <Route path="maintainPanel" element={<Maintain />} />
             </Route>
           </Route>
 
