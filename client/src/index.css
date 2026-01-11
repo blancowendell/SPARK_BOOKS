@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+    --main-color: #e42a24 !important;
+    --main-text-color: #ffffff !important;
+    --main-hover-color: #84c88b !important;
+}
+
+body {
+    font-family: "Montserrat", serif;
+    background: #f1f1f1;
+}
+
+
+.ReactCollapse--collapse {
+    transition: height 300ms;
+}
+
+.btn-dashboard {
+    background-color: var(--main-color) !important;
+    color: var(--main-text-color) !important;
+    padding: 8px 20px !important;
+    border-radius: 4px !important;
+    transition: background-color 0.3s !important;
+}
+
+.btn-dashboard:hover {
+    background-color: var(--main-hover-color) !important;
+}
+
+
+.ant-layout-sider-trigger {
+    background-color: var(--main-color) !important;
+    color: var(--main-text-color) !important;
+}
+
+.ant-layout-sider-trigger:hover {
+    background-color: var(--main-hover-color) !important;
+    color: var(--main-text-color) !important;
+}
+
+.ant-layout-sider .ant-menu-item-icon,
+.ant-layout-sider .ant-menu-submenu-title .anticon {
+    color: var(--main-color);
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
