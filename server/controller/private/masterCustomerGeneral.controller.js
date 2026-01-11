@@ -5,6 +5,7 @@ const {
   InsertStatementTransCommit,
   SelectStatement,
   GetCurrentDatetime,
+  SelectWhereStatement,
 } = require("../../services/repository/customhelper");
 const {
   Select,
@@ -31,8 +32,8 @@ const { TransactionWithReturn } = require("../../services/utility/utility");
 const loadMasterCustomerGeneral = async (req, res) => {
   try {
     let sql = SelectAllStatement(
-      Master.master_coa_type.tablename,
-      Master.master_coa_type.selectColumns
+      Master.master_customer_general.tablename,
+      Master.master_customer_general.selectColumns
     );
 
     Select(sql, (err, result) => {
@@ -42,7 +43,7 @@ const loadMasterCustomerGeneral = async (req, res) => {
       }
 
       if (result != 0) {
-        let data = DataModeling(result, Master.master_coa_type.prefix_);
+        let data = DataModeling(result, Master.master_customer_general.prefix_);
         res.json(JsonDataResponse(data));
       } else {
         res.json(JsonDataResponse(result));
@@ -59,11 +60,12 @@ const getMasterCustomerGeneral = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let sql =
-      SelectAllStatement(
-        Master.master_coa_type.tablename,
-        Master.master_coa_type.selectColumns
-      ) + " WHERE mct_id = ?";
+    let sql = SelectWhereStatement(
+      Master.master_customer_general.tablename,
+      Master.master_customer_general.selectColumns,
+      [Master.master_customer_general.selectOptionColumns.id],
+      [id]
+    );
 
     SelectParameter(sql, [id], (err, result) => {
       if (err) {
@@ -72,7 +74,7 @@ const getMasterCustomerGeneral = async (req, res) => {
       }
 
       if (result != 0) {
-        let data = DataModeling(result, Master.master_coa_type.prefix_);
+        let data = DataModeling(result, Master.master_customer_general.prefix_);
         res.json(JsonDataResponse(data));
       } else {
         res.json(JsonDataResponse(result));
@@ -87,9 +89,9 @@ const getMasterCustomerGeneral = async (req, res) => {
 // POST
 const addMasterCustomerGeneral = async (req, res) => {
   try {
-    const { accountName, accountType, segmentStart } = req.body;
+    const { sequenceId, typeId, name, isProspect, accountNumber, billingAddress, country, region, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website } = req.body;
 
-    if (!accountName || !accountType || !segmentStart) {
+    if (!sequenceId || !typeId || !name || !accountNumber || !billingAddress || !telephone) {
       return res
         .status(400)
         .json(JsonWarningResponse("Missing required fields"));
