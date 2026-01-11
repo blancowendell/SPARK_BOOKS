@@ -10,12 +10,12 @@ Decrypter(process.env._PASSWORD_ADMIN, (err, encrypted) => {
   password = encrypted;
 });
 
-Decrypter("987cebacbab7ff9c4ac35488f70047e0", (err, encrypted) => {
+Decrypter("71b1ad6dc08cb465461f9ce1df6b616c", (err, encrypted) => {
   if (err) console.error("Error: ", err);
   console.log(encrypted);
 });
 
-Encrypter('5ldev', (err, encrypted) => {
+Encrypter('kapsdev123', (err, encrypted) => {
   if (err) console.error("Error: ", err);
   console.log(encrypted);
 });
