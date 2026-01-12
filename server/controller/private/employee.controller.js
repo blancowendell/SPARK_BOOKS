@@ -100,8 +100,6 @@ const addEmployee = async (req, res) => {
     try {
     const { firstname, lastname, email, access, sequenceId } = req.body;
 
-    console.log(req.body);
-
     if (!firstname || !lastname || !access) {
       return res
         .status(400)

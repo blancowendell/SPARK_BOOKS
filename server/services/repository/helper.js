@@ -1,6 +1,11 @@
 const { DataModeling } = require("../../services/data_modeling/Database");
 const { DecrypterString } = require("./cryptography");
-const { InsertStatement, SelectStatement, UpdateStatement, GetCurrentDatetime } = require("./customhelper");
+const {
+  InsertStatement,
+  SelectStatement,
+  UpdateStatement,
+  GetCurrentDatetime,
+} = require("./customhelper");
 const { Maintenance } = require("../../database/model/Maintenance");
 const { Token } = require("../../database/model/Token");
 const { Select, Check, Insert, InsertTable, Update } = require("./dbconnect");
@@ -666,7 +671,6 @@ exports.SyncOTPEmail = ({ email, token, expiredDate }) => {
   return template;
 };
 
-
 //#endregion
 
 //#region FUNCTIONS
@@ -704,7 +708,8 @@ exports.generateUniqueTicketId = async (ticket_level) => {
     const seq = await new Promise((resolve, reject) => {
       Select({ sql: select_sql, values: [ticket_level] }, (err, res) => {
         if (err) return reject(err);
-        if (!res || res.length === 0) return reject(new Error("No sequence config found."));
+        if (!res || res.length === 0)
+          return reject(new Error("No sequence config found."));
         resolve(res[0]);
       });
     });
@@ -714,13 +719,17 @@ exports.generateUniqueTicketId = async (ticket_level) => {
     // Assemble date parts based on config
     const dateParts = [];
     if (seq.ms_include_year) dateParts.push(now.getFullYear());
-    if (seq.ms_include_month) dateParts.push(String(now.getMonth() + 1).padStart(2, "0"));
-    if (seq.ms_include_day) dateParts.push(String(now.getDate()).padStart(2, "0"));
+    if (seq.ms_include_month)
+      dateParts.push(String(now.getMonth() + 1).padStart(2, "0"));
+    if (seq.ms_include_day)
+      dateParts.push(String(now.getDate()).padStart(2, "0"));
 
     const datePart = dateParts.join(seq.ms_separator); // Only use separator between date parts
 
     // Build the LIKE pattern for checking existing tickets
-    const likePattern = `${seq.ms_prefix}${datePart ? datePart + seq.ms_separator : ""}%`;
+    const likePattern = `${seq.ms_prefix}${
+      datePart ? datePart + seq.ms_separator : ""
+    }%`;
 
     const check_sql = `SELECT t_id FROM tickets WHERE t_id LIKE ? ORDER BY t_id DESC LIMIT 1`;
 
@@ -737,13 +746,17 @@ exports.generateUniqueTicketId = async (ticket_level) => {
     } else {
       const lastPart = latestTicket.split(seq.ms_separator).pop();
       const parsed = parseInt(lastPart, 10);
-      nextNumber = isNaN(parsed) ? parseInt(seq.ms_start_number, 10) : parsed + 1;
+      nextNumber = isNaN(parsed)
+        ? parseInt(seq.ms_start_number, 10)
+        : parsed + 1;
     }
 
     const padded = String(nextNumber).padStart(seq.ms_padding_length, "0");
 
     // ✅ Final ticket ID: no separator between prefix and date
-    const ticket_id = `${seq.ms_prefix}${datePart ? datePart + seq.ms_separator : ""}${padded}`;
+    const ticket_id = `${seq.ms_prefix}${
+      datePart ? datePart + seq.ms_separator : ""
+    }${padded}`;
 
     return ticket_id;
   } catch (error) {
@@ -755,16 +768,9 @@ exports.generateUniqueTicketId = async (ticket_level) => {
 exports.generateDashboardId = (userId, userType, title, description, owner) => {
   return new Promise((resolve, reject) => {
     try {
-      const insert_data = [[
-        userId,
-        userType,
-        title,
-        description,
-        owner,
-      ]];      
+      const insert_data = [[userId, userType, title, description, owner]];
 
       console.log("Insert Data for Dashboard:", insert_data);
-      
 
       const sql_insert = InsertStatement(
         Maintenance.maintenance_dashboards.tablename,
@@ -807,7 +813,14 @@ exports.sanitizeInput = (input) => {
   return input;
 };
 
-exports.createToken = (referenceId, tableName, name, type, email, durationInHours) => {
+exports.createToken = (
+  referenceId,
+  tableName,
+  name,
+  type,
+  email,
+  durationInHours
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       const generatedToken = crypto.randomBytes(10).toString("hex");
@@ -916,7 +929,10 @@ exports.ImageUpload = (type, tableId, imageData, callback) => {
               return callback(err);
             } else {
               console.log("Image updated, affected rows:", result.affectedRows);
-              return callback(null, { success: true, message: "Image updated successfully" });
+              return callback(null, {
+                success: true,
+                message: "Image updated successfully",
+              });
             }
           });
         } else {
@@ -934,7 +950,10 @@ exports.ImageUpload = (type, tableId, imageData, callback) => {
               return callback(err);
             } else {
               console.log("Image inserted successfully:", result);
-              return callback(null, { success: true, message: "Image inserted successfully" });
+              return callback(null, {
+                success: true,
+                message: "Image inserted successfully",
+              });
             }
           });
         }
@@ -986,7 +1005,9 @@ exports.generateUniqueEmployeeId = async (employee_level) => {
 
     const separator = seq.ms_separator || "";
     const datePart = dateParts.join(separator);
-    const likePattern = `${seq.ms_prefix}${datePart ? datePart + separator : ""}%`;
+    const likePattern = `${seq.ms_prefix}${
+      datePart ? datePart + separator : ""
+    }%`;
 
     const check_sql = `SELECT me_id FROM master_employee WHERE me_id LIKE ? ORDER BY me_id DESC LIMIT 1`;
 
@@ -1009,7 +1030,9 @@ exports.generateUniqueEmployeeId = async (employee_level) => {
     }
 
     const padded = String(nextNumber).padStart(seq.ms_padding_length, "0");
-    const employee_id = `${seq.ms_prefix}${datePart ? datePart + separator : ""}${padded}`;
+    const employee_id = `${seq.ms_prefix}${
+      datePart ? datePart + separator : ""
+    }${padded}`;
 
     return employee_id;
   } catch (error) {
@@ -1018,10 +1041,93 @@ exports.generateUniqueEmployeeId = async (employee_level) => {
   }
 };
 
+exports.generateUniquePartyId = async ({
+  sequenceKey, // e.g. CUSTOMER, VENDOR
+  tableName, // master_customer_general | master_vendor_general
+  idColumn, // mcg_id | mvg_id
+}) => {
+  try {
+    /** 1. Load sequence configuration */
+    const select_sql = `
+      SELECT *
+      FROM maintenance_sequence
+      WHERE ms_id = ?
+      LIMIT 1
+    `;
+
+    const seq = await new Promise((resolve, reject) => {
+      Select({ sql: select_sql, values: [sequenceKey] }, (err, res) => {
+        if (err) return reject(err);
+        if (!res || res.length === 0)
+          return reject(new Error("No sequence config found."));
+        resolve(res[0]);
+      });
+    });
+
+    /** 2. Build date portion */
+    const now = new Date();
+    const dateParts = [];
+
+    if (seq.ms_include_year) {
+      const year = now.getFullYear().toString();
+      dateParts.push(seq.ms_year_format === "YY" ? year.slice(2) : year);
+    }
+
+    if (seq.ms_include_month) {
+      dateParts.push(String(now.getMonth() + 1).padStart(2, "0"));
+    }
+
+    if (seq.ms_include_day) {
+      dateParts.push(String(now.getDate()).padStart(2, "0"));
+    }
+
+    const separator = seq.ms_separator || "";
+    const datePart = dateParts.join(separator);
+
+    /** 3. Find latest ID */
+    const likePattern = `${seq.ms_prefix}${
+      datePart ? datePart + separator : ""
+    }%`;
+
+    const check_sql = `
+      SELECT ${idColumn} AS last_id
+      FROM ${tableName}
+      WHERE ${idColumn} LIKE ?
+      ORDER BY ${idColumn} DESC
+      LIMIT 1
+    `;
+
+    const latestId = await new Promise((resolve, reject) => {
+      Select({ sql: check_sql, values: [likePattern] }, (err, res) => {
+        if (err) return reject(err);
+        resolve(res.length ? res[0].last_id : null);
+      });
+    });
+
+    /** 4. Compute next number */
+    let nextNumber;
+    if (!latestId) {
+      nextNumber = parseInt(seq.ms_start_number, 10);
+    } else {
+      const lastPart = latestId.split(separator).pop();
+      const parsed = parseInt(lastPart, 10);
+      nextNumber = isNaN(parsed)
+        ? parseInt(seq.ms_start_number, 10)
+        : parsed + 1;
+    }
+
+    /** 5. Final ID */
+    const padded = String(nextNumber).padStart(seq.ms_padding_length, "0");
+
+    return `${seq.ms_prefix}${datePart ? datePart + separator : ""}${padded}`;
+  } catch (error) {
+    console.error("Error generating unique ID:", error);
+    throw error;
+  }
+};
+
 exports.genPassword = async ({ id }) => {
-  const password = `${id}`
-    .toLowerCase()
-    .replace(/\s+/g, "");
+  const password = `${id}`.toLowerCase().replace(/\s+/g, "");
   return { password };
 };
 
