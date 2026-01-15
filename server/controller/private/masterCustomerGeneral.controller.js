@@ -18,7 +18,7 @@ const {
   COA_ACCOUNT_TYPES,
   COA_SEGMENT_RANGES,
 } = require("../../services/repository/enum/enums");
-const { UpdateStatement } = require("../../services/repository/helper");
+const { UpdateStatement, generateUniquePartyId } = require("../../services/repository/helper");
 const {
   JsonErrorResponse,
   JsonDataResponse,
@@ -89,64 +89,91 @@ const getMasterCustomerGeneral = async (req, res) => {
 // POST
 const addMasterCustomerGeneral = async (req, res) => {
   try {
-    const { sequenceId, typeId, name, isProspect, accountNumber, billingAddress, country, region, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website } = req.body;
+    const {
+      sequenceId,
+      typeId,
+      name,
+      isProspect,
+      accountNumber,
+      billingAddress,
+      country,
+      region,
+      city,
+      zipCode,
+      baranggayStreet,
+      isTax,
+      telephone,
+      fax,
+      email,
+      website,
+    } = req.body;
 
-    if (!sequenceId || !typeId || !name || !accountNumber || !billingAddress || !telephone) {
+    if (
+      !sequenceId ||
+      !typeId ||
+      !name ||
+      !accountNumber ||
+      !billingAddress ||
+      !telephone
+    ) {
       return res
         .status(400)
         .json(JsonWarningResponse("Missing required fields"));
     }
 
-    if (!COA_ACCOUNT_TYPES.includes(accountType)) {
-      return res
-        .status(400)
-        .json(JsonWarningResponse("Invalid account type value"));
-    }
-
-    if (!COA_SEGMENT_RANGES.includes(segmentStart)) {
-      return res
-        .status(400)
-        .json(JsonWarningResponse("Invalid segment range value"));
-    }
-
     const create_date = GetCurrentDatetime();
     const create_by = req.session.user.username;
     const status = STATUS_LOG.ACTIVE;
+    
+    const customerId = await generateUniquePartyId({
+      sequenceKey: "CUSTOMER",
+      tableName: "master_customer_general",
+      idColumn: "mcg_id",
+    });
 
     const segmentCheck = SelectStatement(
       `
       SELECT 1
-      FROM master_coa_type
-      WHERE mct_account_type = ?
-        AND mct_segment_start = ?
+      FROM master_customer_general
+      WHERE mcg_type_id = ?
+        AND mcg_name = ?
       `,
-      [accountType, segmentStart]
+      [typeId, name]
     );
 
     if (await Check(segmentCheck)) {
       return res
         .status(409)
-        .json(
-          JsonWarningResponse(
-            "Segment range is already used for this account type"
-          )
-        );
+        .json(JsonWarningResponse("Name is already used for this type"));
     }
 
     const sql = InsertStatementTransCommit(
-      Master.master_coa_type.tablename,
-      Master.master_coa_type.prefix,
-      Master.master_coa_type.insertColumns
+      Master.master_customer_general.tablename,
+      Master.master_customer_general.prefix,
+      Master.master_customer_general.insertColumns
     );
 
     const data = [
-      accountName,
-      accountType,
-      segmentStart,
-      create_date,
+      customerId,
+      typeId,
+      name,
+      isProspect,
+      accountNumber,
+      billingAddress,
+      country,
+      region,
+      city,
+      zipCode,
+      baranggayStreet,
+      isTax,
+      telephone,
+      fax,
+      email,
+      website,
       create_by,
       create_date,
-      status,
+      create_date,
+      status
     ];
 
     await TransactionWithReturn([{ sql, values: data }]);
@@ -161,78 +188,91 @@ const addMasterCustomerGeneral = async (req, res) => {
 // PUT
 const editMasterCustomerGeneral = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { accountName, accountType, segmentStart } = req.body;
+    const { customerId } = req.params;
+    const { typeId, name, isProspect, accountNumber, billingAddress, country, region, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website, status } = req.body;
 
-    if (!accountName || !accountType || !segmentStart) {
+    if (!customerId) {
       return res
         .status(400)
-        .json(JsonWarningResponse("Missing required fields"));
-    }
-
-    if (!COA_ACCOUNT_TYPES.includes(accountType)) {
-      return res
-        .status(400)
-        .json(JsonWarningResponse("Invalid account type value"));
-    }
-
-    if (!COA_SEGMENT_RANGES.includes(segmentStart)) {
-      return res
-        .status(400)
-        .json(JsonWarningResponse("Invalid segment range value"));
+        .json(JsonWarningResponse("Customer ID is required"));
     }
 
     let modify_date = GetCurrentDatetime();
-    let modify_by = req.session.user.fullname;
+    // let modify_by = req.session.user.fullname;
 
     let sql = UpdateStatement(
-      Master.master_coa_type.tablename,
-      Master.master_coa_type.prefix,
+      Master.master_customer_general.tablename,
+      Master.master_customer_general.prefix,
       [
-        Master.master_coa_type.updateOptionColumns.account_name,
-        Master.master_coa_type.updateOptionColumns.account_type,
-        Master.master_coa_type.updateOptionColumns.segment_start,
-        Master.master_coa_type.updateOptionColumns.update_date,
-        Master.master_coa_type.updateOptionColumns.create_by,
+        Master.master_customer_general.updateOptionColumns.type_id,
+        Master.master_customer_general.updateOptionColumns.name,
+        Master.master_customer_general.updateOptionColumns.is_prospect,
+        Master.master_customer_general.updateOptionColumns.account_number,
+        Master.master_customer_general.updateOptionColumns.billing_address,
+        Master.master_customer_general.updateOptionColumns.country,
+        Master.master_customer_general.updateOptionColumns.region,
+        Master.master_customer_general.updateOptionColumns.city,
+        Master.master_customer_general.updateOptionColumns.zip_code,
+        Master.master_customer_general.updateOptionColumns.baranggay_street,
+        Master.master_customer_general.updateOptionColumns.is_tax,
+        Master.master_customer_general.updateOptionColumns.telephone,
+        Master.master_customer_general.updateOptionColumns.fax,
+        Master.master_customer_general.updateOptionColumns.email,
+        Master.master_customer_general.updateOptionColumns.website,
+        Master.master_customer_general.updateOptionColumns.update_date,
+        Master.master_customer_general.updateOptionColumns.create_by,
+        Master.master_customer_general.updateOptionColumns.status,
       ],
-      [Master.master_coa_type.updateOptionColumns.id]
+      [Master.master_customer_general.updateOptionColumns.id]
     );
 
     let data = [
-      accountName,
-      accountType,
-      segmentStart,
+      typeId,
+      name,
+      isProspect,
+      accountNumber,
+      billingAddress,
+      country,
+      region,
+      city,
+      zipCode,
+      baranggayStreet,
+      isTax,
+      telephone,
+      fax,
+      email,
+      website,
       modify_date,
-      modify_by,
-      id,
+      create_by,
+      status,
     ];
 
-    let checkStatementFirst = SelectStatement(
-      `
-        SELECT 1
-        FROM master_coa_type
-        WHERE mct_account_type = ?
-          AND mct_segment_start = ?
-          AND mct_id != ?
-        `,
-      [accountType, segmentStart, id]
-    );
+    // let checkStatementFirst = SelectStatement(
+    //   `
+    //     SELECT 1
+    //     FROM master_customer_general
+    //     WHERE mcg_type_id = ?
+    //       AND mcg_name = ?
+    //       AND mcg_id != ?
+    //     `,
+    //   [typeId, name, customerId]
+    // );
 
-    const result = await Check(checkStatementFirst);
+    // const result = await Check(checkStatementFirst);
 
-    if (result !== 0) {
-      return res
-        .status(400)
-        .json(
-          JsonWarningResponse(
-            "Segment range is already used for this account type"
-          )
-        );
-    }
+    // if (result !== 0) {
+    //   return res
+    //     .status(400)
+    //     .json(
+    //       JsonWarningResponse(
+    //         "Name is already used for this type"
+    //       )
+    //     );
+    // }
 
     let checkStatement = SelectStatement(
-      "SELECT * FROM master_coa_type WHERE mct_id = ? AND mct_account_name = ? AND mct_account_type = ? AND mct_segment_start = ?",
-      [id, accountName, accountType, segmentStart]
+      "SELECT * FROM master_customer_general WHERE mcg_id = ? AND mcg_account_number = ? AND mcg_type_id = ? AND mcg_name = ? AND mcg_status = ? AND mcg_billing_address = ? AND mcg_country = ? AND mcg_region = ? AND mcg_city = ? AND mcg_zip_code = ? AND mcg_baranggay_street = ? AND mcg_is_tax = ? AND mcg_telephone = ? AND mcg_fax = ? AND mcg_email = ? AND mcg_website = ?",
+      [customerId, accountNumber, typeId, name, status, billingAddress, country, region, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website]
     );
 
     Check(checkStatement)

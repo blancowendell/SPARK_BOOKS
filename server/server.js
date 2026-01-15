@@ -54,6 +54,7 @@ var coaRunBalRouter = require("./routes/private/coaRunBal.routes");
 //#region ROUTES PUBLIC
 
 var loginRouter = require("./routes/public/login.routes");
+var psgcRouter = require("./routes/public/psgc.routes");
 
 //#endregion
 
@@ -121,6 +122,7 @@ app.use((req, res, next) => {
 //#region ROUTES USE PUBLIC
 
 app.use("/", loginRouter);
+app.use("/psgc", psgcRouter);
 
 //#endregion
 

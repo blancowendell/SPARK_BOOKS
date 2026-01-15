@@ -33,19 +33,61 @@ module.exports = {
         type: Sequelize.TEXT('long'),
         allowNull: false
       },
-      mcg_country: Sequelize.TEXT('long'),
-      mcg_region: Sequelize.TEXT('long'),
-      mcg_city: Sequelize.TEXT('long'),
-      mcg_zip_code: Sequelize.TEXT('long'),
-      mcg_baranggay_street: Sequelize.TEXT('long'),
-      mcg_is_tax: Sequelize.BOOLEAN,
-      mcg_telephone: Sequelize.STRING(255),
-      mcg_fax: Sequelize.STRING(255),
+      mcg_country: {
+        type: Sequelize.TEXT('long'),
+        allowNull: true
+      },
+      mcg_region: {
+        type: Sequelize.TEXT('long'),
+        allowNull: true
+      },
+      mcg_city: {
+        type: Sequelize.TEXT('long'),
+        allowNull: true
+      },
+      mcg_zip_code: {
+        type: Sequelize.TEXT('long'),
+        allowNull: true
+      },
+      mcg_baranggay_street: {
+        type: Sequelize.TEXT('long'),
+        allowNull: true
+      },
+      mcg_is_tax: {
+        type: Sequelize.BOOLEAN,
+      },
+      mcg_telephone: {
+        type: Sequelize.STRING(255),
+        allowNull: true
+      },
+      mcg_fax: {
+        type: Sequelize.STRING(255),
+        allowNull: true
+      },
       mcg_email: {
         type: Sequelize.STRING(255),
         unique: true
       },
-      mcg_website: Sequelize.STRING(255)
+      mcg_website: {
+        type: Sequelize.STRING(255),
+        allowNull: true
+      },
+      mcg_create_by: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      },
+      mcg_create_date: {
+        type: Sequelize.DATEONLY,
+        allowNull: false
+      },
+      mcg_update_date: {
+        type: Sequelize.DATEONLY,
+        allowNull: false
+      },
+      mcg_status: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      }
     });
   },
 

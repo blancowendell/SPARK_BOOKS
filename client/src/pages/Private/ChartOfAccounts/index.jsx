@@ -320,6 +320,17 @@ const ChartOfAccounts = () => {
           rowsPerPage={10}
           withActions={false}
         />
+
+        <div className="flex justify-between space-x-4 mt-4">
+            <button
+              type="button"
+              onClick={setIsViewDrawerOpen.bind(null, false)}
+              className="px-4 py-2 bg-gray-300 rounded-md flex items-center space-x-2"
+            >
+              <TbXboxXFilled />
+              <span>Close</span>
+            </button>
+          </div>
       </Drawer>
     </div>
   );

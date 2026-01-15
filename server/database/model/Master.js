@@ -376,7 +376,20 @@ const Master = {
       "is_prospect",
       "account_number",
       "billing_address",
-      "email"
+      "country",
+      "region",
+      "city",
+      "zip_code",
+      "baranggay_street",
+      "is_tax",
+      "telephone",
+      "fax",
+      "email",
+      "website",
+      "create_by",
+      "create_date",
+      "update_date",
+      "status"
     ],
   selectColumns: [
       "mcg_id",
@@ -385,7 +398,20 @@ const Master = {
       "mcg_is_prospect",
       "mcg_account_number",
       "mcg_billing_address",
-      "mcg_email"
+      "mcg_country",
+      "mcg_region",
+      "mcg_city",
+      "mcg_zip_code",
+      "mcg_baranggay_street",
+      "mcg_is_tax",
+      "mcg_telephone",
+      "mcg_fax",
+      "mcg_email",
+      "mcg_website",
+      "mcg_create_by",
+      "mcg_create_date",
+      "mcg_update_date",
+      "mcg_status"
     ],
   selectOptionColumns: {
     id: "mcg_id",
@@ -394,7 +420,20 @@ const Master = {
     is_prospect: "mcg_is_prospect",
     account_number: "mcg_account_number",
     billing_address: "mcg_billing_address",
-    email: "mcg_email"
+    country: "mcg_country",
+    region: "mcg_region",
+    city: "mcg_city",
+    zip_code: "mcg_zip_code",
+    baranggay_street: "mcg_baranggay_street",
+    is_tax: "mcg_is_tax",
+    telephone: "mcg_telephone",
+    fax: "mcg_fax",
+    email: "mcg_email",
+    website: "mcg_website",
+    create_by: "mcg_create_by",
+    create_date: "mcg_create_date",
+    update_date: "mcg_update_date",
+    status: "mcg_status"
   },
   updateOptionColumns: {
     id: "id",
@@ -403,10 +442,24 @@ const Master = {
     is_prospect: "is_prospect",
     account_number: "account_number",
     billing_address: "billing_address",
-    email: "email"
+    country: "country",
+    region: "region",
+    city: "city",
+    zip_code: "zip_code",
+    baranggay_street: "baranggay_street",
+    is_tax: "is_tax",
+    telephone: "telephone",
+    fax: "fax",
+    email: "email",
+    website: "website",
+    create_by: "create_by",
+    create_date: "create_date",
+    update_date: "update_date",
+    status: "status"
   },
   selectDateFormatColumns: {
-
+    create_date: "REPLACE(REPLACE(mcg_create_date, 'T', ' '), 'Z', '') AS mcg_create_date",
+    update_date: "REPLACE(REPLACE(mcg_update_date, 'T', ' '), 'Z', '') AS mcg_update_date"
   },
   selectMiscColumns: {
 
@@ -501,6 +554,177 @@ const Master = {
   selectDateFormatColumns: {
     create_date: "REPLACE(REPLACE(mim_create_date, 'T', ' '), 'Z', '') AS mim_create_date",
     update_date: "REPLACE(REPLACE(mim_update_date, 'T', ' '), 'Z', '') AS mim_update_date"
+  },
+  selectMiscColumns: {
+
+  }
+},
+  master_regions: {
+  tablename: "master_regions",
+  prefix: "mr",
+  prefix_: "mr_",
+  insertColumns: [
+      "code",
+      "name",
+      "create_date",
+      "update_date"
+    ],
+  selectColumns: [
+      "mr_id",
+      "mr_code",
+      "mr_name",
+      "mr_create_date",
+      "mr_update_date"
+    ],
+  selectOptionColumns: {
+    id: "mr_id",
+    code: "mr_code",
+    name: "mr_name",
+    create_date: "mr_create_date",
+    update_date: "mr_update_date"
+  },
+  updateOptionColumns: {
+    id: "id",
+    code: "code",
+    name: "name",
+    create_date: "create_date",
+    update_date: "update_date"
+  },
+  selectDateFormatColumns: {
+    create_date: "REPLACE(REPLACE(mr_create_date, 'T', ' '), 'Z', '') AS mr_create_date",
+    update_date: "REPLACE(REPLACE(mr_update_date, 'T', ' '), 'Z', '') AS mr_update_date"
+  },
+  selectMiscColumns: {
+
+  }
+},
+  master_provinces: {
+  tablename: "master_provinces",
+  prefix: "mp",
+  prefix_: "mp_",
+  insertColumns: [
+      "code",
+      "name",
+      "region_id",
+      "create_date",
+      "update_date"
+    ],
+  selectColumns: [
+      "mp_id",
+      "mp_code",
+      "mp_name",
+      "mp_region_id",
+      "mp_create_date",
+      "mp_update_date"
+    ],
+  selectOptionColumns: {
+    id: "mp_id",
+    code: "mp_code",
+    name: "mp_name",
+    region_id: "mp_region_id",
+    create_date: "mp_create_date",
+    update_date: "mp_update_date"
+  },
+  updateOptionColumns: {
+    id: "id",
+    code: "code",
+    name: "name",
+    region_id: "region_id",
+    create_date: "create_date",
+    update_date: "update_date"
+  },
+  selectDateFormatColumns: {
+    create_date: "REPLACE(REPLACE(mp_create_date, 'T', ' '), 'Z', '') AS mp_create_date",
+    update_date: "REPLACE(REPLACE(mp_update_date, 'T', ' '), 'Z', '') AS mp_update_date"
+  },
+  selectMiscColumns: {
+
+  }
+},
+  master_cities_municipalities: {
+  tablename: "master_cities_municipalities",
+  prefix: "mcm",
+  prefix_: "mcm_",
+  insertColumns: [
+      "code",
+      "name",
+      "province_id",
+      "create_date",
+      "update_date"
+    ],
+  selectColumns: [
+      "mcm_id",
+      "mcm_code",
+      "mcm_name",
+      "mcm_province_id",
+      "mcm_is_city",
+      "mcm_create_date",
+      "mcm_update_date"
+    ],
+  selectOptionColumns: {
+    id: "mcm_id",
+    code: "mcm_code",
+    name: "mcm_name",
+    province_id: "mcm_province_id",
+    is_city: "mcm_is_city",
+    create_date: "mcm_create_date",
+    update_date: "mcm_update_date"
+  },
+  updateOptionColumns: {
+    id: "id",
+    code: "code",
+    name: "name",
+    province_id: "province_id",
+    is_city: "is_city",
+    create_date: "create_date",
+    update_date: "update_date"
+  },
+  selectDateFormatColumns: {
+    create_date: "REPLACE(REPLACE(mcm_create_date, 'T', ' '), 'Z', '') AS mcm_create_date",
+    update_date: "REPLACE(REPLACE(mcm_update_date, 'T', ' '), 'Z', '') AS mcm_update_date"
+  },
+  selectMiscColumns: {
+
+  }
+},
+  master_barangays: {
+  tablename: "master_barangays",
+  prefix: "mb",
+  prefix_: "mb_",
+  insertColumns: [
+      "code",
+      "name",
+      "city_municipality_id",
+      "create_date",
+      "update_date"
+    ],
+  selectColumns: [
+      "mb_id",
+      "mb_code",
+      "mb_name",
+      "mb_city_municipality_id",
+      "mb_create_date",
+      "mb_update_date"
+    ],
+  selectOptionColumns: {
+    id: "mb_id",
+    code: "mb_code",
+    name: "mb_name",
+    city_municipality_id: "mb_city_municipality_id",
+    create_date: "mb_create_date",
+    update_date: "mb_update_date"
+  },
+  updateOptionColumns: {
+    id: "id",
+    code: "code",
+    name: "name",
+    city_municipality_id: "city_municipality_id",
+    create_date: "create_date",
+    update_date: "update_date"
+  },
+  selectDateFormatColumns: {
+    create_date: "REPLACE(REPLACE(mb_create_date, 'T', ' '), 'Z', '') AS mb_create_date",
+    update_date: "REPLACE(REPLACE(mb_update_date, 'T', ' '), 'Z', '') AS mb_update_date"
   },
   selectMiscColumns: {
 
