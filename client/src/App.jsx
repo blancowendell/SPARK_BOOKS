@@ -15,6 +15,7 @@ import ForgotPasswordPage from "./components/Pages/ForgotPassword";
 import "react-toastify/dist/ReactToastify.css";
 import ChartOfAccounts from "./pages/Private/ChartOfAccounts";
 import Maintain from "./pages/Private/Maintain";
+import Inventory from "./pages/Private/Inventory";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
               <Route path="samplepage" element={<SamplePage />} />
               <Route path="chartOfAccounts" element={<ChartOfAccounts />} />
               <Route path="maintainPanel" element={<Maintain />} />
+              <Route path="inventory" element={<Inventory />} />
             </Route>
           </Route>
 

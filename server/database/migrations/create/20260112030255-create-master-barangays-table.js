@@ -9,7 +9,6 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-
       mb_code: {
         type: Sequelize.STRING(10),
         allowNull: false,

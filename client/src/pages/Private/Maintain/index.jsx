@@ -10,7 +10,8 @@ import {
     FaChartBar,
     FaLock,
     FaShareAlt,
-    FaQuestionCircle
+    FaQuestionCircle,
+    FaPercentage,
 } from 'react-icons/fa';
 import { TbReportAnalytics } from 'react-icons/tb';
 import { IoSettingsSharp } from 'react-icons/io5';
@@ -23,6 +24,7 @@ import CustomerTypes from './parts/CustomerTypes';
 import InventoryMethods from './parts/InventoryMethods';
 import VendorTypes from './parts/VendorTypes';
 import SharedReports from './parts/SharedReports';
+import PricingFormula from './parts/PricingFormula';
 
 const ReportsPage = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -40,6 +42,8 @@ const ReportsPage = () => {
                 return <VendorTypes />;
             case 'Inventory Methods':
                 return <InventoryMethods />;
+            case 'Pricing Formula':
+                return <PricingFormula />;
             case 'Shared reports':
                 return <SharedReports />;
             // case 'COA Types':
@@ -98,6 +102,13 @@ const ReportsPage = () => {
                         collapsed={collapsed}
                         onClick={setActivePage}
                         active={activePage === 'Inventory Methods'}
+                    />
+                    <NavItem
+                        label="Pricing Formula"
+                        icon={<FaPercentage  />}
+                        collapsed={collapsed}
+                        onClick={setActivePage}
+                        active={activePage === 'Pricing Formula'}
                     />
                     <NavItem
                         label="Shared reports"

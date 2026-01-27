@@ -49,6 +49,9 @@ var masterCustomerGeneralRouter = require("./routes/private/masterCustomerGenera
 var masterVendorGeneralRouter = require("./routes/private/masterVendorGeneral.routes");
 var masterInventoryMethodsRouter = require("./routes/private/masterInventoryMethods.routes");
 var coaRunBalRouter = require("./routes/private/coaRunBal.routes");
+var masterInventoryRouter = require("./routes/private/masterInventory.routes");
+var inventoryPricingRouter = require("./routes/private/inventoryPricing.routes");
+var pricingFormulaRouter = require("./routes/private/pricingFormula.routes");
 //#endregion
 
 //#region ROUTES PUBLIC
@@ -149,6 +152,9 @@ app.use("/master_customer_general", masterCustomerGeneralRouter);
 app.use("/master_vendor_general", masterVendorGeneralRouter);
 app.use("/master_inventory_methods", masterInventoryMethodsRouter);
 app.use("/coa_run_bal", coaRunBalRouter);
+app.use("/master_inventory", masterInventoryRouter);
+app.use("/inventory_pricing", inventoryPricingRouter);
+app.use("/pricing_formula", pricingFormulaRouter);
 //#endregion
 
 // 404 handler
