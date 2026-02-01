@@ -1,20 +1,20 @@
-const REQUEST = {
-  COA: "Correction of Attendance",
-  OVERTIME: "Overtime",
-  LEAVE: "Leave",
-  CA: "Cash Advance",
-  LOAN: "Loan",
-  OTMEAL: "Overtime Meal",
-  HD: "Holiday OT",
-  RD: "Rest Day OT",
-  OB: "Official Business",
-  UT: "Undertime",
-};
+// const REQUEST = {
+//   COA: "Correction of Attendance",
+//   OVERTIME: "Overtime",
+//   LEAVE: "Leave",
+//   CA: "Cash Advance",
+//   LOAN: "Loan",
+//   OTMEAL: "Overtime Meal",
+//   HD: "Holiday OT",
+//   RD: "Rest Day OT",
+//   OB: "Official Business",
+//   UT: "Undertime",
+// };
 
-exports.REQUEST = REQUEST;
+// exports.REQUEST = REQUEST;
 
-const STAFF_HOUSE_STATUS = {};
-exports.STAFF_HOUSE_STATUS = STAFF_HOUSE_STATUS;
+// const STAFF_HOUSE_STATUS = {};
+// exports.STAFF_HOUSE_STATUS = STAFF_HOUSE_STATUS;
 
 const STATUS_LOG = {
   ACTIVE: "ACTIVE",
@@ -79,3 +79,36 @@ const COA_SEGMENT_RANGES = [
 ];
 
 exports.COA_SEGMENT_RANGES = COA_SEGMENT_RANGES;
+
+const OUM = {
+  EA: "EA",
+  KG: "KG",
+  LBS: "LBS",
+  MTR: "MTR",
+  FT: "FT",
+  BOX: "BOX",
+  PACK: "PACK",
+  SET: "SET",
+  PC: "PC",
+};
+
+exports.OUM = OUM;
+
+const INVENTORY_OPERATIONS = {
+  IN: "IN",
+  OUT: "OUT",
+};
+
+exports.INVENTORY_OPERATIONS = INVENTORY_OPERATIONS;
+
+const INVENTORY_METHODS = {
+  INVOICE: "INVOICE",
+  CREDIT: "CREDIT",
+  DEBIT: "DEBIT",
+  CASH: "CASH",
+  CHECK: "CHECK",
+  PURCHASE: "PURCHASE",
+  ADJUSTMENTS: "ADJUSTMENTS",
+};
+
+exports.INVENTORY_METHODS = INVENTORY_METHODS;

@@ -33,6 +33,91 @@ This document explains the purpose of each npm script available in this project.
   ```bash
   npm start
 
+
+### npm run format:fix
+
+Fixes any formatting issues.
+
+npx sequelize-cli migration:generate --name <migration-name> 
+npm run migrations:status
+npx sequelize-cli db:migrate
+
+
+### Migrations
+
+To create a new migration file, run the following command:
+
+```bash
+npx sequelize-cli migration:generate --name <migration-name>
+```
+
+Replace `<migration-name>` with the name of your migration. For example:
+
+```bash
+npx sequelize-cli migration:generate --name create-employees
+```
+
+This will create a new migration file in the `migrations` directory with the specified name.
+
+To apply the migration, run the following command:
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+This will apply all pending migrations to the database.
+
+To rollback the last migration, run the following command:
+
+```bash
+npx sequelize-cli db:migrate:undo
+```
+
+This will rollback the last migration and apply the previous migration.
+
+To check the current migration status, run the following command:
+
+```bash
+npx sequelize-cli db:migrate:status
+```
+
+This will display the current migration status.
+
+
+```bash
+npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
+
+npx sequelize-cli seed:generate --name demo-user
+
+npx sequelize-cli db:seed:all
+
+npx sequelize-cli db:migrate:undo
+
+npx sequelize-cli db:seed:undo:all
+
+npx sequelize db:migrate:undo:all && npx sequelize db:migrate
+
+```
+
+Redo migrations
+
+```bash
+npx sequelize db:drop; npx sequelize db:create; npx sequelize db:migrate; npx sequelize db:seed:all
+
+npx sequelize-cli db:migrate --name 
+
+```
+
+
+Create Migrations Alter
+
+```bash
+
+npx sequelize-cli migration:generate --name alter-table-name-add-column-name --migrations-path database/migrations/alter
+
+```
+
+
 ### MCR Generator
 
 Creating an MCR (Model–Controller–Routes) in this project is fully automated using custom npm scripts.

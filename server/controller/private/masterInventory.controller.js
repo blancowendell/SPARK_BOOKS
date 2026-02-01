@@ -7,6 +7,7 @@ const {
   GetCurrentDatetime,
   UpdateStatement,
   SelectAllStatement,
+  SelectWithJoinStatement,
 } = require("../../services/repository/customhelper");
 const {
   Select,
@@ -22,14 +23,27 @@ const {
   JsonWarningResponse,
 } = require("../../services/repository/response");
 const { TransactionWithReturn } = require("../../services/utility/utility");
-const { STATUS_LOG } = require("../../services/repository/enum/enums");
+const { STATUS_LOG, OUM } = require("../../services/repository/enum/enums");
+const { Inventory } = require("../../database/model/Inventory");
 
 // GET
 const loadMasterInventory = async (req, res) => {
   try {
-    let sql = SelectAllStatement(
+    const sql = SelectWithJoinStatement(
       Master.master_inventory.tablename,
       Master.master_inventory.selectColumns,
+      {},
+      [Inventory.inventory_quantity.selectOptionColumns.quantity],
+      [
+        {
+          type: "INNER",
+          table: Inventory.inventory_quantity.tablename,
+          on:
+            Master.master_inventory.selectOptionColumns.id +
+            " = " +
+            Inventory.inventory_quantity.selectOptionColumns.inventory_id,
+        },
+      ],
     );
 
     Select(sql, (err, result) => {
@@ -56,11 +70,22 @@ const getMasterInventory = async (req, res) => {
   try {
     const { inventoryId } = req.params;
 
-    let sql = SelectWhereStatement(
+    const sql = SelectWithJoinStatement(
       Master.master_inventory.tablename,
       Master.master_inventory.selectColumns,
-      [Master.master_inventory.selectOptionColumns.id],
-      [inventoryId],
+      {},
+      [Inventory.inventory_quantity.selectOptionColumns.quantity],
+      [
+        {
+          type: "INNER",
+          table: Inventory.inventory_quantity.tablename,
+          on:
+            Master.master_inventory.selectOptionColumns.id +
+            " = " +
+            Inventory.inventory_quantity.selectOptionColumns.inventory_id,
+        },
+      ],
+      `mi_id = ?`,
     );
 
     SelectParameter(sql, [inventoryId], (err, result) => {
@@ -107,6 +132,12 @@ const addMasterInventory = async (req, res) => {
     const create_by = req.session.user.username;
     const status = STATUS_LOG.ACTIVE;
 
+    const allowedStockingUnit = Object.values(OUM);
+
+    if (!allowedStockingUnit.includes(stockingUnit)) {
+      return res.status(400).json(JsonWarningResponse("Invalid stocking unit"));
+    }
+
     if (
       !description ||
       !descriptionSalesPurchase ||
@@ -139,8 +170,7 @@ const addMasterInventory = async (req, res) => {
     };
 
     const itemId = generateItemId(description);
-    console.log(itemId, 'ITEMID');
-    
+    console.log(itemId, "ITEMID");
 
     const segmentCheck = SelectStatement(
       `
@@ -148,7 +178,7 @@ const addMasterInventory = async (req, res) => {
       FROM master_inventory
       WHERE mi_description = ?
       `,
-      [description]
+      [description],
     );
 
     const exists = await Check(segmentCheck);

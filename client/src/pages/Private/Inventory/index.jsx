@@ -21,6 +21,7 @@ const Inventory = () => {
     "Item Class",
     "Brand",
     "Location",
+    "Qty On Hand",
     "Status",
     "Actions",
   ];
@@ -31,6 +32,7 @@ const Inventory = () => {
     "itemClass",
     "brand",
     "location",
+    "qtyOnHand",
     "status",
     "actions",
   ];
@@ -62,6 +64,20 @@ const Inventory = () => {
   const [status, setStatus] = useState("ACTIVE");
   const [itemPrice, setItemPrice] = useState("");
 
+  const [qtyOnHand, setQtyOnHand] = useState(0);
+
+  const STOCKING_UNIT_OPTIONS = [
+    { value: "EA", label: "EA – Each" },
+    { value: "KG", label: "KG – Kilogram" },
+    { value: "LBS", label: "LBS – Pounds" },
+    { value: "MTR", label: "MTR – Meter" },
+    { value: "FT", label: "FT – Feet" },
+    { value: "BOX", label: "BOX – Box" },
+    { value: "PACK", label: "PACK – Pack" },
+    { value: "SET", label: "SET – Set" },
+    { value: "PC", label: "PC – Piece" },
+  ];
+
   /* =======================
      INITIAL LOAD
   ======================= */
@@ -85,7 +101,7 @@ const Inventory = () => {
       setUpcSku(editingInventory.upc_sku || "");
       setItemType(editingInventory.item_type || "");
       setItemLocation(editingInventory.item_location || "");
-      setStockingUnit(editingInventory.stocking_unit || "");
+      setStockingUnit(editingInventory.stocking_uom || "");
       setSize(editingInventory.size || "");
       setWeight(editingInventory.weight || "");
       setLocation(editingInventory.location || "");
@@ -184,6 +200,7 @@ const Inventory = () => {
     try {
       const [data] = await InventoryAPI.getMasterInventory(row.id);
       setEditingInventory(data);
+      setQtyOnHand(data.iq_quantity ?? 0);
       setIsDrawerOpen(true);
     } catch {
       showErrorToast("Failed to load inventory details");
@@ -218,6 +235,8 @@ const Inventory = () => {
     setLocation("");
     setBrand("");
     setStatus("ACTIVE");
+
+    setQtyOnHand(0);
   };
 
   const dropdownItems = [{ key: "add-new", label: "Add New Item" }];
@@ -233,14 +252,20 @@ const Inventory = () => {
     itemClass: inv.item_class,
     brand: inv.brand,
     location: inv.location,
+    qtyOnHand: inv.iq_quantity,
     status: inv.status,
     ...inv,
   }));
 
   return (
-    <div className="p-5">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">Inventory</h2>
+    <div className="p-5 space-y-3">
+       <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-semibold">Inventory List</h2>
+          <p className="text-sm text-gray-500">
+            Masters Data for Inventory
+          </p>
+        </div>
       </div>
 
       <div className="overflow-x-auto rounded-xl shadow">
@@ -258,14 +283,28 @@ const Inventory = () => {
       <Drawer
         isOpen={isDrawerOpen}
         onClose={closeDrawer}
-        title={editingInventory ? "Edit Inventory" : "Add Inventory"}
+        title={
+          <div className="flex justify-between items-center w-full">
+            <span className="text-lg font-semibold">
+              {editingInventory ? "Edit Inventory" : "Add Inventory"}
+            </span>
+
+            {editingInventory && (
+              <span className="text-xl font-semibold text-gray-700">
+                Qty on Hand:&nbsp;
+                <span className="text-gray-900">
+                  {Number(qtyOnHand).toFixed(2)}
+                </span>
+              </span>
+            )}
+          </div>
+        }
         width={1000}
       >
         <form className="space-y-8" onSubmit={handleSubmit}>
           {/* ================= BASIC INFO ================= */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Basic Information</h3>
-
             <div className="grid grid-cols-2 gap-4">
               <FloatingInput
                 label="Description"
@@ -373,10 +412,12 @@ const Inventory = () => {
                 onChange={(e) => setItemLocation(e.target.value)}
               />
 
-              <FloatingInput
+              <FloatingSelect
+                id="mi_stocking_uom"
                 label="Stocking Unit"
                 value={stockingUnit}
                 onChange={(e) => setStockingUnit(e.target.value)}
+                options={STOCKING_UNIT_OPTIONS}
               />
 
               <FloatingInput
