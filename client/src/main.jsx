@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { TourProvider } from "./components/Tour/context/TourContext.jsx";
-import logo from "./assets/images/logo.jpg";
+import logo from "./assets/images/logo2.png";
 
 const theme = createTheme();
 

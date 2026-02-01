@@ -27,6 +27,7 @@ export const AdminMenuConfig = [
         label: "Master's",
         children: [
           { key: "chartOfAccountsPanel", label: "Chart of Accounts", link: "chartOfAccounts" },
+          { key: "customerPanel", label: "Customer", link: "customer" },
           { key: "employeePanel", label: "Employee", link: "employees" },
           { key: "inventoryPanel", label: "Inventory", link: "inventory" },
           { key: "samplePagePanel", label: "Sample Page", link: "samplepage" },

@@ -41,6 +41,10 @@ module.exports = {
         type: Sequelize.TEXT('long'),
         allowNull: true
       },
+      mcg_province: {
+        type: Sequelize.TEXT('long'),
+        allowNull: true
+      },
       mcg_city: {
         type: Sequelize.TEXT('long'),
         allowNull: true

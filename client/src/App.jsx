@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ChartOfAccounts from "./pages/Private/ChartOfAccounts";
 import Maintain from "./pages/Private/Maintain";
 import Inventory from "./pages/Private/Inventory";
+import Customer from "./pages/Private/Customer";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
               <Route path="chartOfAccounts" element={<ChartOfAccounts />} />
               <Route path="maintainPanel" element={<Maintain />} />
               <Route path="inventory" element={<Inventory />} />
+              <Route path="customer" element={<Customer />} />
             </Route>
           </Route>
 

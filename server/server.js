@@ -59,6 +59,7 @@ var pricingFormulaRouter = require("./routes/private/pricingFormula.routes");
 var loginRouter = require("./routes/public/login.routes");
 var psgcRouter = require("./routes/public/psgc.routes");
 
+var addressLocationRouter = require("./routes/public/addressLocation.routes");
 //#endregion
 
 const verifyJWT = require("./middleware/authenticator");
@@ -127,6 +128,7 @@ app.use((req, res, next) => {
 app.use("/", loginRouter);
 app.use("/psgc", psgcRouter);
 
+app.use("/address_location", addressLocationRouter);
 //#endregion
 
 app.use(verifyJWT);

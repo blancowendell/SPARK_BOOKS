@@ -10,8 +10,8 @@ const {
 
 // GET
 router.get("/load-master_customer_general", loadMasterCustomerGeneral);
-router.get("/get-master_customer_general/:id", getMasterCustomerGeneral);
+router.get("/get-master_customer_general/:customerId", getMasterCustomerGeneral);
 router.post("/add-master_customer_general", addMasterCustomerGeneral);
-router.put("/edit-master_customer_general/:id", editMasterCustomerGeneral);
+router.put("/edit-master_customer_general/:customerId", editMasterCustomerGeneral);
 
 module.exports = router;
