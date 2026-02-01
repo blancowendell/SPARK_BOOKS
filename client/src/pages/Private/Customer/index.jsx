@@ -17,6 +17,7 @@ import CustomerAPI from "../../../api/private/customer/customerAPI";
 import SetupAPI from "../../../api/private/maintenance/sequenceAPI";
 import AddressAPI from "../../../api/public/location/addressAPI";
 import CustomerTypeAPI from "../../../api/private/maintain/customerTypeAPI";
+import EmployeeAPI from "../../../api/private/employee/employeeAPI";
 
 const Customer = () => {
   const headers = [
@@ -45,6 +46,7 @@ const Customer = () => {
   const [website, setWebsite] = useState("");
   const [isTax, setIsTax] = useState(false);
   const [status, setStatus] = useState("ACTIVE");
+  const [salesRepId, setSalesRepId] = useState("");
 
   // 🔑 ADDRESS STATE STORES CODES ONLY
   const [region, setRegion] = useState("");
@@ -58,11 +60,13 @@ const Customer = () => {
   const [barangays, setBarangays] = useState([]);
   const [sequences, setSequences] = useState([]);
   const [customerTypes, setCustomerTypes] = useState([]);
+  const [salesReps, setSalesReps] = useState([]);
 
   useEffect(() => {
     fetchCustomers();
     fetchSequences();
     fetchCustomerTypes();
+    fetchSalesReps();
     loadRegions();
   }, []);
 
@@ -112,6 +116,21 @@ const Customer = () => {
       showErrorToast("Failed to load customer types");
     }
   };
+
+const fetchSalesReps = async () => {
+  try {
+    const res = await EmployeeAPI.loadEmployees();
+
+    setSalesReps(
+      res.map((e) => ({
+        label: e.fullname || `${e.first_name} ${e.last_name}`,
+        value: String(e.id), // ✅ UNIQUE + STABLE
+      })),
+    );
+  } catch {
+    showErrorToast("Failed to load sales reps");
+  }
+};
 
   const fetchSequences = async () => {
     try {
@@ -182,6 +201,7 @@ const Customer = () => {
   const resetForm = () => {
     setSequenceId("");
     setTypeId("");
+    setSalesRepId("");
     setAccountNumber("");
     setName("");
     setBillingAddress("");
@@ -213,6 +233,7 @@ const Customer = () => {
 
       // BASIC
       setTypeId(String(customer.type_id ?? ""));
+      setSalesRepId(String(customer.sales_rep_id ?? ""));
       setAccountNumber(customer.account_number ?? "");
       setName(customer.name ?? "");
       setBillingAddress(customer.billing_address ?? "");
@@ -270,6 +291,7 @@ const Customer = () => {
     const payload = {
       sequenceId,
       typeId,
+      salesRepId,
       name,
       isProspect: false,
       accountNumber,
@@ -294,6 +316,7 @@ const Customer = () => {
         response = await CustomerAPI.editCustomerGeneral(
           editingCustomer.id,
           payload.typeId,
+          payload.salesRepId,
           payload.name,
           payload.isProspect,
           payload.accountNumber,
@@ -315,6 +338,7 @@ const Customer = () => {
         response = await CustomerAPI.addCustomerGeneral(
           payload.sequenceId,
           payload.typeId,
+          payload.salesRepId,
           payload.name,
           payload.isProspect,
           payload.accountNumber,
@@ -390,6 +414,13 @@ const Customer = () => {
                 value={typeId}
                 onChange={(e) => setTypeId(e.target.value)}
                 options={customerTypes}
+              />
+
+              <FloatingSelect
+                label="Sales Rep"
+                value={salesRepId}
+                onChange={(e) => setSalesRepId(e.target.value)}
+                options={salesReps}
               />
               {!editingCustomer && (
                 <FloatingSelect

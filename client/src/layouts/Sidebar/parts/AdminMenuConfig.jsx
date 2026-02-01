@@ -9,6 +9,7 @@ import { PiTicketBold } from "react-icons/pi";
 import { TbCategory, TbReport } from "react-icons/tb";
 import { GrHostMaintenance } from "react-icons/gr";
 import { MdOutlineInventory2 } from "react-icons/md";
+import { GrTask } from "react-icons/gr";
 
 export const AdminMenuConfig = [
   {
@@ -52,6 +53,15 @@ export const AdminMenuConfig = [
         icon: <GrHostMaintenance size={20} />,
         label: "Maintain",
         link: "maintainPanel",
+      },
+      {
+        key: "taskTabs",
+        icon: <GrTask size={20} />,
+        label: "Tasks",
+        children: [
+          { key: "invoicingPanel", label: "Sales/Invoicing", link: "invoicing" },
+          { key: "purchaseOrderPanel", label: "Purchase Orders", link: "purchaseOrder" },
+        ],
       },
       {
         key: "reports",

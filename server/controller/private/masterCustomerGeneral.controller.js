@@ -95,6 +95,7 @@ const addMasterCustomerGeneral = async (req, res) => {
     const {
       sequenceId,
       typeId,
+      salesRepId,
       name,
       isProspect,
       accountNumber,
@@ -114,6 +115,7 @@ const addMasterCustomerGeneral = async (req, res) => {
 
     if (
       !sequenceId ||
+      !salesRepId ||
       !typeId ||
       !name ||
       !accountNumber ||
@@ -162,6 +164,7 @@ const addMasterCustomerGeneral = async (req, res) => {
     const data = [
       customerId,
       typeId,
+      salesRepId,
       name,
       isProspect,
       accountNumber,
@@ -198,6 +201,7 @@ const editMasterCustomerGeneral = async (req, res) => {
     const { customerId } = req.params;
     const {
       typeId,
+      salesRepId,
       name,
       isProspect,
       accountNumber,
@@ -239,6 +243,7 @@ const editMasterCustomerGeneral = async (req, res) => {
       Master.master_customer_general.prefix,
       [
         Master.master_customer_general.updateOptionColumns.type_id,
+        Master.master_customer_general.updateOptionColumns.sales_rep_id,
         Master.master_customer_general.updateOptionColumns.name,
         Master.master_customer_general.updateOptionColumns.is_prospect,
         Master.master_customer_general.updateOptionColumns.account_number,
@@ -263,6 +268,7 @@ const editMasterCustomerGeneral = async (req, res) => {
 
     let data = [
       typeId,
+      salesRepId,
       name,
       isProspect,
       accountNumber,
@@ -308,11 +314,12 @@ const editMasterCustomerGeneral = async (req, res) => {
     // }
 
     let checkStatement = SelectStatement(
-      "SELECT * FROM master_customer_general WHERE mcg_id = ? AND mcg_account_number = ? AND mcg_type_id = ? AND mcg_name = ? AND mcg_status = ? AND mcg_billing_address = ? AND mcg_country = ? AND mcg_region = ? AND mcg_province = ? AND mcg_city = ? AND mcg_zip_code = ? AND mcg_baranggay_street = ? AND mcg_is_tax = ? AND mcg_telephone = ? AND mcg_fax = ? AND mcg_email = ? AND mcg_website = ?",
+      "SELECT * FROM master_customer_general WHERE mcg_id = ? AND mcg_account_number = ? AND mcg_type_id = ? AND mcg_sales_rep_id = ? AND mcg_name = ? AND mcg_status = ? AND mcg_billing_address = ? AND mcg_country = ? AND mcg_region = ? AND mcg_province = ? AND mcg_city = ? AND mcg_zip_code = ? AND mcg_baranggay_street = ? AND mcg_is_tax = ? AND mcg_telephone = ? AND mcg_fax = ? AND mcg_email = ? AND mcg_website = ?",
       [
         customerId,
         accountNumber,
         typeId,
+        salesRepId,
         name,
         status,
         billingAddress,

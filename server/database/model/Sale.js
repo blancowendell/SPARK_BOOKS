@@ -1,0 +1,97 @@
+const Sale = {
+  sales_invoice: {
+  tablename: "sales_invoice",
+  prefix: "si",
+  prefix_: "si_",
+  insertColumns: [
+      "invoice_no",
+      "customer_id",
+      "sales_rep_id",
+      "bill_to_address",
+      "bill_to_name",
+      "ship_to_address",
+      "ship_to_name",
+      "invoice_date",
+      "due_date",
+      "shipping_date",
+      "sales_tax",
+      "freight",
+      "invoice_total",
+      "net_due",
+      "created_at",
+      "create_by",
+      "status"
+    ],
+  selectColumns: [
+      "si_id",
+      "si_invoice_no",
+      "si_customer_id",
+      "si_sales_rep_id",
+      "si_bill_to_address",
+      "si_bill_to_name",
+      "si_ship_to_address",
+      "si_ship_to_name",
+      "si_invoice_date",
+      "si_due_date",
+      "si_shipping_date",
+      "si_sales_tax",
+      "si_freight",
+      "si_invoice_total",
+      "si_net_due",
+      "si_created_at",
+      "si_create_by",
+      "si_status"
+    ],
+  selectOptionColumns: {
+    id: "si_id",
+    invoice_no: "si_invoice_no",
+    customer_id: "si_customer_id",
+    sales_rep_id: "si_sales_rep_id",
+    bill_to_address: "si_bill_to_address",
+    bill_to_name: "si_bill_to_name",
+    ship_to_address: "si_ship_to_address",
+    ship_to_name: "si_ship_to_name",
+    invoice_date: "si_invoice_date",
+    due_date: "si_due_date",
+    shipping_date: "si_shipping_date",
+    sales_tax: "si_sales_tax",
+    freight: "si_freight",
+    invoice_total: "si_invoice_total",
+    net_due: "si_net_due",
+    created_at: "si_created_at",
+    create_by: "si_create_by",
+    status: "si_status"
+  },
+  updateOptionColumns: {
+    id: "id",
+    invoice_no: "invoice_no",
+    customer_id: "customer_id",
+    sales_rep_id: "sales_rep_id",
+    bill_to_address: "bill_to_address",
+    bill_to_name: "bill_to_name",
+    ship_to_address: "ship_to_address",
+    ship_to_name: "ship_to_name",
+    invoice_date: "invoice_date",
+    due_date: "due_date",
+    shipping_date: "shipping_date",
+    sales_tax: "sales_tax",
+    freight: "freight",
+    invoice_total: "invoice_total",
+    net_due: "net_due",
+    created_at: "created_at",
+    create_by: "create_by",
+    status: "status"
+  },
+  selectDateFormatColumns: {
+    invoice_date: "REPLACE(REPLACE(si_invoice_date, 'T', ' '), 'Z', '') AS si_invoice_date",
+    due_date: "REPLACE(REPLACE(si_due_date, 'T', ' '), 'Z', '') AS si_due_date",
+    shipping_date: "REPLACE(REPLACE(si_shipping_date, 'T', ' '), 'Z', '') AS si_shipping_date",
+    created_at: "REPLACE(REPLACE(si_created_at, 'T', ' '), 'Z', '') AS si_created_at"
+  },
+  selectMiscColumns: {
+
+  }
+},
+};
+
+exports.Sale = Sale;

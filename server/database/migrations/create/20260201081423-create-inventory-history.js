@@ -34,7 +34,7 @@ module.exports = {
         allowNull: false
       },
       ih_cost: {
-        type: Sequelize.DECIMAL(10, 5),
+        type: Sequelize.DECIMAL(15, 5),
         allowNull: false
       },
       ih_operation: {

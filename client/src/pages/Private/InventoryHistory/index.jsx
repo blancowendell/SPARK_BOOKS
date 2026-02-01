@@ -43,10 +43,10 @@ const InventoryHistory = () => {
   const keys = [
     "created_at",
     "mi_item_id",
-    "cost",
+    "amount",
     "operation",
     "method",
-    "qty",
+    "quantity",
     "created_by",
     "actions",
   ];
@@ -180,8 +180,14 @@ const InventoryHistory = () => {
   }));
 
   const data = histories.map((h) => ({
-    ...h,
+    id: h.id,
     created_at: new Date(h.created_at).toLocaleString(),
+    method: h.method,
+    operation: h.operation,
+    amount: h.cost,
+    mi_item_id: h.mi_item_id,
+    quantity: h.qty,
+    created_by: h.created_by,
   }));
 
   return (

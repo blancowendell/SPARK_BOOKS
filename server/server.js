@@ -54,6 +54,8 @@ var inventoryPricingRouter = require("./routes/private/inventoryPricing.routes")
 var pricingFormulaRouter = require("./routes/private/pricingFormula.routes");
 var inventoryHistoryRouter = require("./routes/private/inventoryHistory.routes");
 var inventoryQuantityRouter = require("./routes/private/inventoryQuantity.routes");
+var salesInvoiceRouter = require("./routes/private/salesInvoice.routes");
+var masterSalesRepRouter = require("./routes/private/masterSalesRep.routes");
 //#endregion
 
 //#region ROUTES PUBLIC
@@ -161,6 +163,8 @@ app.use("/inventory_pricing", inventoryPricingRouter);
 app.use("/pricing_formula", pricingFormulaRouter);
 app.use("/inventory_history", inventoryHistoryRouter);
 app.use("/inventory_quantity", inventoryQuantityRouter);
+app.use("/sales_invoice", salesInvoiceRouter);
+app.use("/master_sales_rep", masterSalesRepRouter);
 //#endregion
 
 // 404 handler

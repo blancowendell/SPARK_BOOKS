@@ -38,7 +38,13 @@ const loadInventoryQuantity = async (req, res) => {
       Inventory.inventory_quantity.tablename,
       Inventory.inventory_quantity.selectColumns,
       {},
-      [Master.master_inventory.selectOptionColumns.item_id],
+      [
+        Master.master_inventory.selectOptionColumns.item_id,
+        Master.master_inventory.selectOptionColumns.item_price,
+        Master.master_inventory.selectOptionColumns.description,
+        Master.master_inventory.selectOptionColumns.item_class,
+        Master.master_inventory.selectOptionColumns.stocking_uom
+      ],
       [
         {
           type: "INNER",

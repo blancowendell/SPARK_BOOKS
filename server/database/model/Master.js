@@ -372,6 +372,7 @@ const Master = {
   insertColumns: [
       "id",
       "type_id",
+      "sales_rep_id",
       "name",
       "is_prospect",
       "account_number",
@@ -395,6 +396,7 @@ const Master = {
   selectColumns: [
       "mcg_id",
       "mcg_type_id",
+      "mcg_sales_rep_id",
       "mcg_name",
       "mcg_is_prospect",
       "mcg_account_number",
@@ -418,6 +420,7 @@ const Master = {
   selectOptionColumns: {
     id: "mcg_id",
     type_id: "mcg_type_id",
+    sales_rep_id: "mcg_sales_rep_id",
     name: "mcg_name",
     is_prospect: "mcg_is_prospect",
     account_number: "mcg_account_number",
@@ -441,6 +444,7 @@ const Master = {
   updateOptionColumns: {
     id: "id",
     type_id: "type_id",
+    sales_rep_id: "sales_rep_id",
     name: "name",
     is_prospect: "is_prospect",
     account_number: "account_number",
