@@ -608,9 +608,9 @@ import FloatingSelect from "../../../components/Forms/FloatingSelect";
 import FloatingDatePicker from "../../../components/Forms/FloatingDatePicker";
 import { TbMinus, TbPlus } from "react-icons/tb";
 
-import CustomerDetails from "./parts/invoiceModal/CustomerDetails";
-import LineItemsTable from "./parts/invoiceModal/LineItemsTable";
-import InvoiceTotals from "./parts/invoiceModal/InvoiceTotals";
+import LineItemsTable from "./parts/InvoiceModal2/LineItemsTable";
+import InvoiceTotals from "./parts/InvoiceModal2/InvoiceTotals";
+import CustomerDetails from "./parts/InvoiceModal2/CustomerDetails";
 
 const EMPTY_LINE_ITEM = {
   item_id: "",

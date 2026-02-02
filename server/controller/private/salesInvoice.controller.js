@@ -547,7 +547,6 @@ const addSalesInvoice = async (req, res) => {
   }
 };
 
-
 // PUT
 const editSalesInvoice = async (req, res) => {
   try {
