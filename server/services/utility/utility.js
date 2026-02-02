@@ -118,4 +118,20 @@ Decrypter(process.env._PASSWORD_ADMIN, async (err, result) => {
       connection.release();
     }
   };
+
+  exports.TransactionWithConnection = async (callback) => {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      const result = await callback(connection);
+      await connection.commit();
+      return result;
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
+  };
+
 });

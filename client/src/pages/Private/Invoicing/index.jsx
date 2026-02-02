@@ -850,8 +850,20 @@ const Invoice = () => {
       showSuccessToast("Invoice successfully created");
       fetchInvoices();
       setIsAddOpen(false);
-    } catch (e) {
-      showErrorToast("Failed to create invoice");
+    } catch (error) {
+      console.error(error);
+
+      // ✅ THIS IS THE IMPORTANT PART
+      const backendMsg =
+        error?.response?.data?.msg || error?.response?.data?.message;
+
+      if (backendMsg) {
+        return showWarningToast(backendMsg);
+      }
+
+      showErrorToast(
+        "Error Adding Sales Invoice"
+      );
     }
   };
 
@@ -879,7 +891,7 @@ const Invoice = () => {
     ]);
   };
 
-  
+
 
   const removeLineItem = (index) => {
     setLineItems((prev) =>
@@ -888,30 +900,30 @@ const Invoice = () => {
   };
 
   const itemsSubtotal = lineItems.reduce(
-  (sum, item) => sum + Number(item.amount || 0),
-  0
-);
+    (sum, item) => sum + Number(item.amount || 0),
+    0
+  );
 
-// user-entered sales tax (%)
-const extraSalesTaxRate = Number(form.salesTax || 0) / 100;
+  // user-entered sales tax (%)
+  const extraSalesTaxRate = Number(form.salesTax || 0) / 100;
 
-// fixed VAT (12%)
-const VAT_RATE = 0.12;
+  // fixed VAT (12%)
+  const VAT_RATE = 0.12;
 
-const extraSalesTaxAmount = itemsSubtotal * extraSalesTaxRate;
-const vatAmount = itemsSubtotal * VAT_RATE;
+  const extraSalesTaxAmount = itemsSubtotal * extraSalesTaxRate;
+  const vatAmount = itemsSubtotal * VAT_RATE;
 
-const invoiceTotal = itemsSubtotal + extraSalesTaxAmount + vatAmount;
-const netDue = invoiceTotal + Number(form.freight || 0);
+  const invoiceTotal = itemsSubtotal + extraSalesTaxAmount + vatAmount;
+  const netDue = invoiceTotal + Number(form.freight || 0);
 
 
-useEffect(() => {
-  setForm((prev) => ({
-    ...prev,
-    invoiceTotal: invoiceTotal.toFixed(2),
-    netDue: netDue.toFixed(2),
-  }));
-}, [invoiceTotal, netDue]);
+  useEffect(() => {
+    setForm((prev) => ({
+      ...prev,
+      invoiceTotal: invoiceTotal.toFixed(2),
+      netDue: netDue.toFixed(2),
+    }));
+  }, [invoiceTotal, netDue]);
 
   const data = invoices.map((i) => ({
     id: i.id,
@@ -974,7 +986,7 @@ useEffect(() => {
           />
 
           <InvoiceTotals form={form} onChange={handleChange} vatAmount={vatAmount}
- />
+          />
         </div>
       </NormalModal>
 
