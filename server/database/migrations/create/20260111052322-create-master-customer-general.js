@@ -18,6 +18,16 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
       },
+      mcg_sales_rep_id: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+        references: {
+          model: 'master_employee',
+          key: 'me_id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
+      },
       mcg_name: {
         type: Sequelize.STRING(255),
         allowNull: false
@@ -38,6 +48,10 @@ module.exports = {
         allowNull: true
       },
       mcg_region: {
+        type: Sequelize.TEXT('long'),
+        allowNull: true
+      },
+      mcg_province: {
         type: Sequelize.TEXT('long'),
         allowNull: true
       },

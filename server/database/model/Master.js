@@ -372,12 +372,14 @@ const Master = {
   insertColumns: [
       "id",
       "type_id",
+      "sales_rep_id",
       "name",
       "is_prospect",
       "account_number",
       "billing_address",
       "country",
       "region",
+      "province",
       "city",
       "zip_code",
       "baranggay_street",
@@ -394,12 +396,14 @@ const Master = {
   selectColumns: [
       "mcg_id",
       "mcg_type_id",
+      "mcg_sales_rep_id",
       "mcg_name",
       "mcg_is_prospect",
       "mcg_account_number",
       "mcg_billing_address",
       "mcg_country",
       "mcg_region",
+      "mcg_province",
       "mcg_city",
       "mcg_zip_code",
       "mcg_baranggay_street",
@@ -416,12 +420,14 @@ const Master = {
   selectOptionColumns: {
     id: "mcg_id",
     type_id: "mcg_type_id",
+    sales_rep_id: "mcg_sales_rep_id",
     name: "mcg_name",
     is_prospect: "mcg_is_prospect",
     account_number: "mcg_account_number",
     billing_address: "mcg_billing_address",
     country: "mcg_country",
     region: "mcg_region",
+    province: "mcg_province",
     city: "mcg_city",
     zip_code: "mcg_zip_code",
     baranggay_street: "mcg_baranggay_street",
@@ -438,12 +444,14 @@ const Master = {
   updateOptionColumns: {
     id: "id",
     type_id: "type_id",
+    sales_rep_id: "sales_rep_id",
     name: "name",
     is_prospect: "is_prospect",
     account_number: "account_number",
     billing_address: "billing_address",
     country: "country",
     region: "region",
+    province: "province",
     city: "city",
     zip_code: "zip_code",
     baranggay_street: "baranggay_street",
@@ -559,172 +567,99 @@ const Master = {
 
   }
 },
-  master_regions: {
-  tablename: "master_regions",
-  prefix: "mr",
-  prefix_: "mr_",
+  master_inventory: {
+  tablename: "master_inventory",
+  prefix: "mi",
+  prefix_: "mi_",
   insertColumns: [
-      "code",
-      "name",
-      "create_date",
-      "update_date"
+      "item_id",
+      "description",
+      "description_sales_purchase",
+      "item_class",
+      "gl_sales_account",
+      "gl_inventory_account",
+      "gl_cogs_account",
+      "item_price",
+      "upc_sku",
+      "item_type",
+      "item_location",
+      "stocking_uom",
+      "size",
+      "weight",
+      "location",
+      "brand",
+      "created_at",
+      "create_by",
+      "status"
     ],
   selectColumns: [
-      "mr_id",
-      "mr_code",
-      "mr_name",
-      "mr_create_date",
-      "mr_update_date"
+      "mi_id",
+      "mi_item_id",
+      "mi_description",
+      "mi_description_sales_purchase",
+      "mi_item_class",
+      "mi_gl_sales_account",
+      "mi_gl_inventory_account",
+      "mi_gl_cogs_account",
+      "mi_item_price",
+      "mi_upc_sku",
+      "mi_item_type",
+      "mi_item_location",
+      "mi_stocking_uom",
+      "mi_size",
+      "mi_weight",
+      "mi_location",
+      "mi_brand",
+      "mi_created_at",
+      "mi_create_by",
+      "mi_status"
     ],
   selectOptionColumns: {
-    id: "mr_id",
-    code: "mr_code",
-    name: "mr_name",
-    create_date: "mr_create_date",
-    update_date: "mr_update_date"
+    id: "mi_id",
+    item_id: "mi_item_id",
+    description: "mi_description",
+    description_sales_purchase: "mi_description_sales_purchase",
+    item_class: "mi_item_class",
+    gl_sales_account: "mi_gl_sales_account",
+    gl_inventory_account: "mi_gl_inventory_account",
+    gl_cogs_account: "mi_gl_cogs_account",
+    item_price: "mi_item_price",
+    upc_sku: "mi_upc_sku",
+    item_type: "mi_item_type",
+    item_location: "mi_item_location",
+    stocking_uom: "mi_stocking_uom",
+    size: "mi_size",
+    weight: "mi_weight",
+    location: "mi_location",
+    brand: "mi_brand",
+    created_at: "mi_created_at",
+    create_by: "mi_create_by",
+    status: "mi_status"
   },
   updateOptionColumns: {
     id: "id",
-    code: "code",
-    name: "name",
-    create_date: "create_date",
-    update_date: "update_date"
+    item_id: "item_id",
+    description: "description",
+    description_sales_purchase: "description_sales_purchase",
+    item_class: "item_class",
+    gl_sales_account: "gl_sales_account",
+    gl_inventory_account: "gl_inventory_account",
+    gl_cogs_account: "gl_cogs_account",
+    item_price: "item_price",
+    upc_sku: "upc_sku",
+    item_type: "item_type",
+    item_location: "item_location",
+    stocking_uom: "stocking_uom",
+    size: "size",
+    weight: "weight",
+    location: "location",
+    brand: "brand",
+    created_at: "created_at",
+    create_by: "create_by",
+    status: "status"
   },
   selectDateFormatColumns: {
-    create_date: "REPLACE(REPLACE(mr_create_date, 'T', ' '), 'Z', '') AS mr_create_date",
-    update_date: "REPLACE(REPLACE(mr_update_date, 'T', ' '), 'Z', '') AS mr_update_date"
-  },
-  selectMiscColumns: {
-
-  }
-},
-  master_provinces: {
-  tablename: "master_provinces",
-  prefix: "mp",
-  prefix_: "mp_",
-  insertColumns: [
-      "code",
-      "name",
-      "region_id",
-      "create_date",
-      "update_date"
-    ],
-  selectColumns: [
-      "mp_id",
-      "mp_code",
-      "mp_name",
-      "mp_region_id",
-      "mp_create_date",
-      "mp_update_date"
-    ],
-  selectOptionColumns: {
-    id: "mp_id",
-    code: "mp_code",
-    name: "mp_name",
-    region_id: "mp_region_id",
-    create_date: "mp_create_date",
-    update_date: "mp_update_date"
-  },
-  updateOptionColumns: {
-    id: "id",
-    code: "code",
-    name: "name",
-    region_id: "region_id",
-    create_date: "create_date",
-    update_date: "update_date"
-  },
-  selectDateFormatColumns: {
-    create_date: "REPLACE(REPLACE(mp_create_date, 'T', ' '), 'Z', '') AS mp_create_date",
-    update_date: "REPLACE(REPLACE(mp_update_date, 'T', ' '), 'Z', '') AS mp_update_date"
-  },
-  selectMiscColumns: {
-
-  }
-},
-  master_cities_municipalities: {
-  tablename: "master_cities_municipalities",
-  prefix: "mcm",
-  prefix_: "mcm_",
-  insertColumns: [
-      "code",
-      "name",
-      "province_id",
-      "create_date",
-      "update_date"
-    ],
-  selectColumns: [
-      "mcm_id",
-      "mcm_code",
-      "mcm_name",
-      "mcm_province_id",
-      "mcm_is_city",
-      "mcm_create_date",
-      "mcm_update_date"
-    ],
-  selectOptionColumns: {
-    id: "mcm_id",
-    code: "mcm_code",
-    name: "mcm_name",
-    province_id: "mcm_province_id",
-    is_city: "mcm_is_city",
-    create_date: "mcm_create_date",
-    update_date: "mcm_update_date"
-  },
-  updateOptionColumns: {
-    id: "id",
-    code: "code",
-    name: "name",
-    province_id: "province_id",
-    is_city: "is_city",
-    create_date: "create_date",
-    update_date: "update_date"
-  },
-  selectDateFormatColumns: {
-    create_date: "REPLACE(REPLACE(mcm_create_date, 'T', ' '), 'Z', '') AS mcm_create_date",
-    update_date: "REPLACE(REPLACE(mcm_update_date, 'T', ' '), 'Z', '') AS mcm_update_date"
-  },
-  selectMiscColumns: {
-
-  }
-},
-  master_barangays: {
-  tablename: "master_barangays",
-  prefix: "mb",
-  prefix_: "mb_",
-  insertColumns: [
-      "code",
-      "name",
-      "city_municipality_id",
-      "create_date",
-      "update_date"
-    ],
-  selectColumns: [
-      "mb_id",
-      "mb_code",
-      "mb_name",
-      "mb_city_municipality_id",
-      "mb_create_date",
-      "mb_update_date"
-    ],
-  selectOptionColumns: {
-    id: "mb_id",
-    code: "mb_code",
-    name: "mb_name",
-    city_municipality_id: "mb_city_municipality_id",
-    create_date: "mb_create_date",
-    update_date: "mb_update_date"
-  },
-  updateOptionColumns: {
-    id: "id",
-    code: "code",
-    name: "name",
-    city_municipality_id: "city_municipality_id",
-    create_date: "create_date",
-    update_date: "update_date"
-  },
-  selectDateFormatColumns: {
-    create_date: "REPLACE(REPLACE(mb_create_date, 'T', ' '), 'Z', '') AS mb_create_date",
-    update_date: "REPLACE(REPLACE(mb_update_date, 'T', ' '), 'Z', '') AS mb_update_date"
+    created_at: "REPLACE(REPLACE(mi_created_at, 'T', ' '), 'Z', '') AS mi_created_at"
   },
   selectMiscColumns: {
 

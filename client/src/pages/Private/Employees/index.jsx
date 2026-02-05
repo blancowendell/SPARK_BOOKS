@@ -18,7 +18,7 @@ import AccessAPI from "../../../api/private/access/accessAPI";
 const Employee = () => {
   const headers = [
     "Employee ID",
-    "Full Name",
+    "Full Name", 
     "Email",
     "Access",
     "Status",

@@ -8,12 +8,13 @@ import { FaRegFileCode } from "react-icons/fa";
 import { PiTicketBold } from "react-icons/pi";
 import { TbCategory, TbReport } from "react-icons/tb";
 import { GrHostMaintenance } from "react-icons/gr";
-
+import { MdOutlineInventory2 } from "react-icons/md";
+import { GrTask } from "react-icons/gr";
 
 export const AdminMenuConfig = [
   {
     key: "dashboard",
-    icon: <AiOutlineDashboard size={24} />,
+    icon: <AiOutlineDashboard size={20} />,
     label: "Dashboard",
     link: "/index",
   },
@@ -23,10 +24,11 @@ export const AdminMenuConfig = [
     children: [
       {
         key: "masterTabs",
-        icon: <TbCategory size={24} />,
+        icon: <TbCategory size={20} />,
         label: "Master's",
         children: [
           { key: "chartOfAccountsPanel", label: "Chart of Accounts", link: "chartOfAccounts" },
+          { key: "customerPanel", label: "Customer", link: "customer" },
           { key: "employeePanel", label: "Employee", link: "employees" },
           { key: "samplePagePanel", label: "Sample Page", link: "samplepage" },
         ],
@@ -38,20 +40,38 @@ export const AdminMenuConfig = [
       //   link: "customer",
       // },
       {
+        key: "inventoryTabs",
+        icon: <MdOutlineInventory2 size={20} />,
+        label: "Inventory",
+        children: [
+          { key: "inventoryPanel", label: "Inventory List", link: "inventory" },
+          { key: "inventoryHistoryPanel", label: "Inventory History", link: "inventoryHistory" },
+        ],
+      },
+      {
         key: "maintain",
-        icon: <GrHostMaintenance size={24} />,
+        icon: <GrHostMaintenance size={20} />,
         label: "Maintain",
         link: "maintainPanel",
       },
       {
+        key: "taskTabs",
+        icon: <GrTask size={20} />,
+        label: "Tasks",
+        children: [
+          { key: "invoicingPanel", label: "Sales/Invoicing", link: "invoicing" },
+          { key: "purchaseOrderPanel", label: "Purchase Orders", link: "purchaseOrder" },
+        ],
+      },
+      {
         key: "reports",
-        icon: <TbReport size={24} />,
+        icon: <TbReport size={20} />,
         label: "Reports",
         link: "reportsPanel",
       },
       {
         key: "settingTabs",
-        icon: <AiOutlineSetting size={24} />,
+        icon: <AiOutlineSetting size={20} />,
         label: "Settings",
         children: [
           { key: "settingsPanel", label: "Settings", link: "settings" },
@@ -59,7 +79,7 @@ export const AdminMenuConfig = [
       },
       {
         key: "developerTabs",
-        icon: <FaRegFileCode size={24} />,
+        icon: <FaRegFileCode size={20} />,
         label: "Developer Tabs",
         children: [
           { key: "devToolsPanel", label: "Dev Tools", link: "devtools" },

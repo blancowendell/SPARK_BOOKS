@@ -21,17 +21,19 @@ const CustomerAPI = {
         }
     },
 
-    addCustomerGeneral: async (sequenceId, typeId, name, isProspect, accountNumber, billingAddress, country, region, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website) => {
+    addCustomerGeneral: async (sequenceId, typeId, salesRepId, name, isProspect, accountNumber, billingAddress, country, region, province, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website) => {
         try {
-            const response = await axiosInstance.post('/master_customer_general/add-customer', {
+            const response = await axiosInstance.post('/master_customer_general/add-master_customer_general', {
                 sequenceId,
                 typeId,
+                salesRepId,
                 name,
                 isProspect,
                 accountNumber,
                 billingAddress,
                 country,
                 region,
+                province,
                 city,
                 zipCode,
                 baranggayStreet,
@@ -48,16 +50,18 @@ const CustomerAPI = {
         }
     },
 
-    editCustomerGeneral: async (customerId, typeId, name, isProspect, accountNumber, billingAddress, country, region, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website, status) => {
+    editCustomerGeneral: async (customerId, typeId, salesRepId, name, isProspect, accountNumber, billingAddress, country, region, province, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website, status) => {
         try {
-            const response = await axiosInstance.put(`/master_customer_general/edit-customer/${customerId}`, {
+            const response = await axiosInstance.put(`/master_customer_general/edit-master_customer_general/${customerId}`, {
                 typeId,
+                salesRepId,
                 name,
                 isProspect,
                 accountNumber,
                 billingAddress,
                 country,
                 region,
+                province,
                 city,
                 zipCode,
                 baranggayStreet,

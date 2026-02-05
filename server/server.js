@@ -49,6 +49,13 @@ var masterCustomerGeneralRouter = require("./routes/private/masterCustomerGenera
 var masterVendorGeneralRouter = require("./routes/private/masterVendorGeneral.routes");
 var masterInventoryMethodsRouter = require("./routes/private/masterInventoryMethods.routes");
 var coaRunBalRouter = require("./routes/private/coaRunBal.routes");
+var masterInventoryRouter = require("./routes/private/masterInventory.routes");
+var inventoryPricingRouter = require("./routes/private/inventoryPricing.routes");
+var pricingFormulaRouter = require("./routes/private/pricingFormula.routes");
+var inventoryHistoryRouter = require("./routes/private/inventoryHistory.routes");
+var inventoryQuantityRouter = require("./routes/private/inventoryQuantity.routes");
+var salesInvoiceRouter = require("./routes/private/salesInvoice.routes");
+var masterSalesRepRouter = require("./routes/private/masterSalesRep.routes");
 //#endregion
 
 //#region ROUTES PUBLIC
@@ -56,6 +63,7 @@ var coaRunBalRouter = require("./routes/private/coaRunBal.routes");
 var loginRouter = require("./routes/public/login.routes");
 var psgcRouter = require("./routes/public/psgc.routes");
 
+var addressLocationRouter = require("./routes/public/addressLocation.routes");
 //#endregion
 
 const verifyJWT = require("./middleware/authenticator");
@@ -124,6 +132,7 @@ app.use((req, res, next) => {
 app.use("/", loginRouter);
 app.use("/psgc", psgcRouter);
 
+app.use("/address_location", addressLocationRouter);
 //#endregion
 
 app.use(verifyJWT);
@@ -149,6 +158,13 @@ app.use("/master_customer_general", masterCustomerGeneralRouter);
 app.use("/master_vendor_general", masterVendorGeneralRouter);
 app.use("/master_inventory_methods", masterInventoryMethodsRouter);
 app.use("/coa_run_bal", coaRunBalRouter);
+app.use("/master_inventory", masterInventoryRouter);
+app.use("/inventory_pricing", inventoryPricingRouter);
+app.use("/pricing_formula", pricingFormulaRouter);
+app.use("/inventory_history", inventoryHistoryRouter);
+app.use("/inventory_quantity", inventoryQuantityRouter);
+app.use("/sales_invoice", salesInvoiceRouter);
+app.use("/master_sales_rep", masterSalesRepRouter);
 //#endregion
 
 // 404 handler

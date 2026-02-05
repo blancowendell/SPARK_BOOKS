@@ -18,7 +18,10 @@ const {
   COA_ACCOUNT_TYPES,
   COA_SEGMENT_RANGES,
 } = require("../../services/repository/enum/enums");
-const { UpdateStatement, generateUniquePartyId } = require("../../services/repository/helper");
+const {
+  UpdateStatement,
+  generateUniquePartyId,
+} = require("../../services/repository/helper");
 const {
   JsonErrorResponse,
   JsonDataResponse,
@@ -33,7 +36,7 @@ const loadMasterCustomerGeneral = async (req, res) => {
   try {
     let sql = SelectAllStatement(
       Master.master_customer_general.tablename,
-      Master.master_customer_general.selectColumns
+      Master.master_customer_general.selectColumns,
     );
 
     Select(sql, (err, result) => {
@@ -58,16 +61,16 @@ const loadMasterCustomerGeneral = async (req, res) => {
 // GET BY ID
 const getMasterCustomerGeneral = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { customerId } = req.params;
 
     let sql = SelectWhereStatement(
       Master.master_customer_general.tablename,
       Master.master_customer_general.selectColumns,
       [Master.master_customer_general.selectOptionColumns.id],
-      [id]
+      [`'${customerId}'`],
     );
 
-    SelectParameter(sql, [id], (err, result) => {
+    Select(sql, (err, result) => {
       if (err) {
         console.error(err);
         res.json(JsonErrorResponse(err));
@@ -92,12 +95,14 @@ const addMasterCustomerGeneral = async (req, res) => {
     const {
       sequenceId,
       typeId,
+      salesRepId,
       name,
       isProspect,
       accountNumber,
       billingAddress,
       country,
       region,
+      province,
       city,
       zipCode,
       baranggayStreet,
@@ -110,6 +115,7 @@ const addMasterCustomerGeneral = async (req, res) => {
 
     if (
       !sequenceId ||
+      !salesRepId ||
       !typeId ||
       !name ||
       !accountNumber ||
@@ -122,11 +128,11 @@ const addMasterCustomerGeneral = async (req, res) => {
     }
 
     const create_date = GetCurrentDatetime();
-    const create_by = req.session.user.username;
+    const create_by = req.session.user.fullname;
     const status = STATUS_LOG.ACTIVE;
-    
+
     const customerId = await generateUniquePartyId({
-      sequenceKey: "CUSTOMER",
+      sequenceKey: sequenceId,
       tableName: "master_customer_general",
       idColumn: "mcg_id",
     });
@@ -138,10 +144,12 @@ const addMasterCustomerGeneral = async (req, res) => {
       WHERE mcg_type_id = ?
         AND mcg_name = ?
       `,
-      [typeId, name]
+      [typeId, name],
     );
 
-    if (await Check(segmentCheck)) {
+    const exists = await Check(segmentCheck);
+
+    if (exists.length > 0) {
       return res
         .status(409)
         .json(JsonWarningResponse("Name is already used for this type"));
@@ -150,18 +158,20 @@ const addMasterCustomerGeneral = async (req, res) => {
     const sql = InsertStatementTransCommit(
       Master.master_customer_general.tablename,
       Master.master_customer_general.prefix,
-      Master.master_customer_general.insertColumns
+      Master.master_customer_general.insertColumns,
     );
 
     const data = [
       customerId,
       typeId,
+      salesRepId,
       name,
       isProspect,
       accountNumber,
       billingAddress,
       country,
       region,
+      province,
       city,
       zipCode,
       baranggayStreet,
@@ -173,7 +183,7 @@ const addMasterCustomerGeneral = async (req, res) => {
       create_by,
       create_date,
       create_date,
-      status
+      status,
     ];
 
     await TransactionWithReturn([{ sql, values: data }]);
@@ -189,28 +199,58 @@ const addMasterCustomerGeneral = async (req, res) => {
 const editMasterCustomerGeneral = async (req, res) => {
   try {
     const { customerId } = req.params;
-    const { typeId, name, isProspect, accountNumber, billingAddress, country, region, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website, status } = req.body;
+    const {
+      typeId,
+      salesRepId,
+      name,
+      isProspect,
+      accountNumber,
+      billingAddress,
+      country,
+      region,
+      province,
+      city,
+      zipCode,
+      baranggayStreet,
+      isTax,
+      telephone,
+      fax,
+      email,
+      website,
+      status,
+    } = req.body;
 
-    if (!customerId) {
+    if (
+      !typeId ||
+      !name ||
+      !accountNumber ||
+      !billingAddress ||
+      !region ||
+      !province ||
+      !city ||
+      !telephone
+    ) {
       return res
         .status(400)
-        .json(JsonWarningResponse("Customer ID is required"));
+        .json(JsonWarningResponse("Missing required fields"));
     }
 
     let modify_date = GetCurrentDatetime();
-    // let modify_by = req.session.user.fullname;
+    let modify_by = req.session.user.fullname;
 
     let sql = UpdateStatement(
       Master.master_customer_general.tablename,
       Master.master_customer_general.prefix,
       [
         Master.master_customer_general.updateOptionColumns.type_id,
+        Master.master_customer_general.updateOptionColumns.sales_rep_id,
         Master.master_customer_general.updateOptionColumns.name,
         Master.master_customer_general.updateOptionColumns.is_prospect,
         Master.master_customer_general.updateOptionColumns.account_number,
         Master.master_customer_general.updateOptionColumns.billing_address,
         Master.master_customer_general.updateOptionColumns.country,
         Master.master_customer_general.updateOptionColumns.region,
+        Master.master_customer_general.updateOptionColumns.province,
         Master.master_customer_general.updateOptionColumns.city,
         Master.master_customer_general.updateOptionColumns.zip_code,
         Master.master_customer_general.updateOptionColumns.baranggay_street,
@@ -223,17 +263,19 @@ const editMasterCustomerGeneral = async (req, res) => {
         Master.master_customer_general.updateOptionColumns.create_by,
         Master.master_customer_general.updateOptionColumns.status,
       ],
-      [Master.master_customer_general.updateOptionColumns.id]
-    );
+      [Master.master_customer_general.updateOptionColumns.id],
+    );    
 
     let data = [
       typeId,
+      salesRepId,
       name,
       isProspect,
       accountNumber,
       billingAddress,
       country,
       region,
+      province,
       city,
       zipCode,
       baranggayStreet,
@@ -243,8 +285,9 @@ const editMasterCustomerGeneral = async (req, res) => {
       email,
       website,
       modify_date,
-      create_by,
+      modify_by,
       status,
+      customerId,
     ];
 
     // let checkStatementFirst = SelectStatement(
@@ -271,8 +314,27 @@ const editMasterCustomerGeneral = async (req, res) => {
     // }
 
     let checkStatement = SelectStatement(
-      "SELECT * FROM master_customer_general WHERE mcg_id = ? AND mcg_account_number = ? AND mcg_type_id = ? AND mcg_name = ? AND mcg_status = ? AND mcg_billing_address = ? AND mcg_country = ? AND mcg_region = ? AND mcg_city = ? AND mcg_zip_code = ? AND mcg_baranggay_street = ? AND mcg_is_tax = ? AND mcg_telephone = ? AND mcg_fax = ? AND mcg_email = ? AND mcg_website = ?",
-      [customerId, accountNumber, typeId, name, status, billingAddress, country, region, city, zipCode, baranggayStreet, isTax, telephone, fax, email, website]
+      "SELECT * FROM master_customer_general WHERE mcg_id = ? AND mcg_account_number = ? AND mcg_type_id = ? AND mcg_sales_rep_id = ? AND mcg_name = ? AND mcg_status = ? AND mcg_billing_address = ? AND mcg_country = ? AND mcg_region = ? AND mcg_province = ? AND mcg_city = ? AND mcg_zip_code = ? AND mcg_baranggay_street = ? AND mcg_is_tax = ? AND mcg_telephone = ? AND mcg_fax = ? AND mcg_email = ? AND mcg_website = ?",
+      [
+        customerId,
+        accountNumber,
+        typeId,
+        salesRepId,
+        name,
+        status,
+        billingAddress,
+        country,
+        region,
+        province,
+        city,
+        zipCode,
+        baranggayStreet,
+        isTax,
+        telephone,
+        fax,
+        email,
+        website,
+      ],
     );
 
     Check(checkStatement)
