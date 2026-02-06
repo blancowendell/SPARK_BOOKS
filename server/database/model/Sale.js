@@ -92,6 +92,36 @@ const Sale = {
 
   }
 },
+  sales_orders: {
+  tablename: "sales_orders",
+  prefix: "so",
+  prefix_: "so_",
+  insertColumns: [
+      "created_at",
+      "status"
+    ],
+  selectColumns: [
+      "so_id",
+      "so_created_at",
+      "so_status"
+    ],
+  selectOptionColumns: {
+    id: "so_id",
+    created_at: "so_created_at",
+    status: "so_status"
+  },
+  updateOptionColumns: {
+    id: "id",
+    created_at: "created_at",
+    status: "status"
+  },
+  selectDateFormatColumns: {
+    created_at: "REPLACE(REPLACE(so_created_at, 'T', ' '), 'Z', '') AS so_created_at"
+  },
+  selectMiscColumns: {
+
+  }
+},
 };
 
 exports.Sale = Sale;
