@@ -49,6 +49,7 @@ exports.STATUS_REQUEST = STATUS_REQUEST;
 
 const STATIC_ROLE = {
   ADMIN: "Administrator",
+  AGENT: "Agent",
 };
 
 exports.STATIC_ROLE = STATIC_ROLE;
