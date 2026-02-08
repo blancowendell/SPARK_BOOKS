@@ -12,6 +12,17 @@ module.exports = {
       si_invoice_no: {
         type: Sequelize.STRING(255),
         allowNull: false,
+        unique: true,
+      },
+      si_sales_order_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: "sales_orders",
+          key: "so_id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT",
       },
       si_customer_id: {
         type: Sequelize.STRING(255),

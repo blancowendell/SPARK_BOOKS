@@ -24,7 +24,7 @@ const swaggerAdmin = {
       },
     ],
   },
-  apis: ["./document/admin.swagger.js"],
+  apis: ["./document/swaggers/admin.swagger.js"],
 };
 
 const swaggerDocsAdmin = swaggerJsDoc(swaggerAdmin);

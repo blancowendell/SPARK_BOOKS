@@ -1,10 +1,165 @@
 const Sale = {
+  sales_orders: {
+  tablename: "sales_orders",
+  prefix: "so",
+  prefix_: "so_",
+  insertColumns: [
+      "sales_order_id",
+      "customer_id",
+      "vendor_id",
+      "sales_rep_id",
+      "bill_to_address",
+      "bill_to_name",
+      "ship_to_address",
+      "ship_to_name",
+      "sales_order_date",
+      "shipping_date",
+      "sales_tax",
+      "freight",
+      "total",
+      "net_due",
+      "created_at",
+      "create_by",
+      "process_status",
+      "status"
+    ],
+  selectColumns: [
+      "so_id",
+      "so_sales_order_id",
+      "so_customer_id",
+      "so_vendor_id",
+      "so_sales_rep_id",
+      "so_bill_to_address",
+      "so_bill_to_name",
+      "so_ship_to_address",
+      "so_ship_to_name",
+      "so_sales_order_date",
+      "so_shipping_date",
+      "so_sales_tax",
+      "so_freight",
+      "so_total",
+      "so_net_due",
+      "so_created_at",
+      "so_create_by",
+      "so_process_status",
+      "so_status"
+    ],
+  selectOptionColumns: {
+    id: "so_id",
+    sales_order_id: "so_sales_order_id",
+    customer_id: "so_customer_id",
+    vendor_id: "so_vendor_id",
+    sales_rep_id: "so_sales_rep_id",
+    bill_to_address: "so_bill_to_address",
+    bill_to_name: "so_bill_to_name",
+    ship_to_address: "so_ship_to_address",
+    ship_to_name: "so_ship_to_name",
+    sales_order_date: "so_sales_order_date",
+    shipping_date: "so_shipping_date",
+    sales_tax: "so_sales_tax",
+    freight: "so_freight",
+    total: "so_total",
+    net_due: "so_net_due",
+    created_at: "so_created_at",
+    create_by: "so_create_by",
+    process_status: "so_process_status",
+    status: "so_status"
+  },
+  updateOptionColumns: {
+    id: "id",
+    sales_order_id: "sales_order_id",
+    customer_id: "customer_id",
+    vendor_id: "vendor_id",
+    sales_rep_id: "sales_rep_id",
+    bill_to_address: "bill_to_address",
+    bill_to_name: "bill_to_name",
+    ship_to_address: "ship_to_address",
+    ship_to_name: "ship_to_name",
+    sales_order_date: "sales_order_date",
+    shipping_date: "shipping_date",
+    sales_tax: "sales_tax",
+    freight: "freight",
+    total: "total",
+    net_due: "net_due",
+    created_at: "created_at",
+    create_by: "create_by",
+    process_status: "process_status",
+    status: "status"
+  },
+  selectDateFormatColumns: {
+    sales_order_date: "REPLACE(REPLACE(so_sales_order_date, 'T', ' '), 'Z', '') AS so_sales_order_date",
+    shipping_date: "REPLACE(REPLACE(so_shipping_date, 'T', ' '), 'Z', '') AS so_shipping_date",
+    created_at: "REPLACE(REPLACE(so_created_at, 'T', ' '), 'Z', '') AS so_created_at"
+  },
+  selectMiscColumns: {
+
+  }
+},
+  sales_orders_items: {
+  tablename: "sales_orders_items",
+  prefix: "soi",
+  prefix_: "soi_",
+  insertColumns: [
+      "sales_order_id",
+      "item_id",
+      "quantity",
+      "oum",
+      "item_description",
+      "unit_price",
+      "amount",
+      "created_at",
+      "status"
+    ],
+  selectColumns: [
+      "soi_id",
+      "soi_sales_order_id",
+      "soi_item_id",
+      "soi_quantity",
+      "soi_oum",
+      "soi_item_description",
+      "soi_unit_price",
+      "soi_amount",
+      "soi_created_at",
+      "soi_status"
+    ],
+  selectOptionColumns: {
+    id: "soi_id",
+    sales_order_id: "soi_sales_order_id",
+    item_id: "soi_item_id",
+    quantity: "soi_quantity",
+    oum: "soi_oum",
+    item_description: "soi_item_description",
+    unit_price: "soi_unit_price",
+    amount: "soi_amount",
+    created_at: "soi_created_at",
+    status: "soi_status"
+  },
+  updateOptionColumns: {
+    id: "id",
+    sales_order_id: "sales_order_id",
+    item_id: "item_id",
+    quantity: "quantity",
+    oum: "oum",
+    item_description: "item_description",
+    unit_price: "unit_price",
+    amount: "amount",
+    created_at: "created_at",
+    status: "status"
+  },
+  selectDateFormatColumns: {
+    created_at: "REPLACE(REPLACE(soi_created_at, 'T', ' '), 'Z', '') AS soi_created_at"
+  },
+  selectMiscColumns: {
+
+  }
+},
   sales_invoice: {
   tablename: "sales_invoice",
   prefix: "si",
   prefix_: "si_",
   insertColumns: [
       "invoice_no",
+      "sales_order_id",
       "customer_id",
       "sales_rep_id",
       "bill_to_address",
@@ -25,6 +180,7 @@ const Sale = {
   selectColumns: [
       "si_id",
       "si_invoice_no",
+      "si_sales_order_id",
       "si_customer_id",
       "si_sales_rep_id",
       "si_bill_to_address",
@@ -45,6 +201,7 @@ const Sale = {
   selectOptionColumns: {
     id: "si_id",
     invoice_no: "si_invoice_no",
+    sales_order_id: "si_sales_order_id",
     customer_id: "si_customer_id",
     sales_rep_id: "si_sales_rep_id",
     bill_to_address: "si_bill_to_address",
@@ -65,6 +222,7 @@ const Sale = {
   updateOptionColumns: {
     id: "id",
     invoice_no: "invoice_no",
+    sales_order_id: "sales_order_id",
     customer_id: "customer_id",
     sales_rep_id: "sales_rep_id",
     bill_to_address: "bill_to_address",

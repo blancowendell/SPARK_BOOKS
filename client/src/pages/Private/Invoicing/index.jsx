@@ -21,6 +21,7 @@ import { TbMinus, TbPlus } from "react-icons/tb";
 import LineItemsTable from "./parts/InvoiceModal/LineItemsTable";
 import InvoiceTotals from "./parts/InvoiceModal/InvoiceTotals";
 import CustomerDetails from "./parts/InvoiceModal/CustomerDetails";
+import SalesOrderAPI from "../../../api/private/sales_orders/salesOrderAPI";
 
 const EMPTY_LINE_ITEM = {
   item_id: "",
@@ -59,6 +60,7 @@ const Invoice = () => {
   const [invoices, setInvoices] = useState([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
+  const [isSOOpen, setIsSOOpen] = useState(false); // ✅ REQUIRED
   const [viewInvoice, setViewInvoice] = useState(null);
 
   const [customers, setCustomers] = useState([]);
@@ -67,8 +69,11 @@ const Invoice = () => {
   const [pricingFormulas, setPricingFormulas] = useState([]);
   const [lineItems, setLineItems] = useState([{ ...EMPTY_LINE_ITEM }]);
 
+  const [salesOrders, setSalesOrders] = useState([]);
+  const [selectedSOId, setSelectedSOId] = useState("");
 
   const [form, setForm] = useState({
+    salesOrderId: "",
     invoiceNo: "",
     customerId: "",
     salesRepId: "",
@@ -92,6 +97,15 @@ const Invoice = () => {
       loadEmployees();
     }
   }, [isAddOpen]);
+
+  useEffect(() => {
+    if (isSOOpen) {
+      SalesOrderAPI.loadSalesOrdersApproved().then(setSalesOrders);
+      loadCustomers();
+      loadInventory();
+      loadEmployees();
+    }
+  }, [isSOOpen]);
 
   useEffect(() => {
     addLineItem();
@@ -150,7 +164,7 @@ const Invoice = () => {
     setForm((prev) => ({
       ...prev,
       customerId: customer.id,
-      salesRepId: customer.sales_rep_id || "", // 👈 AUTO SET
+      salesRepId: customer.sales_rep_id || "",
       billToName: customer.name,
       billToAddress: billingAddress,
       shipToName: customer.name,
@@ -230,6 +244,7 @@ const Invoice = () => {
   const handleSubmit = async () => {
     try {
       await InvoiceAPI.addInvoice(
+        form.salesOrderId,
         form.invoiceNo,
         form.customerId,
         form.salesRepId,
@@ -250,6 +265,7 @@ const Invoice = () => {
       showSuccessToast("Invoice successfully created");
       fetchInvoices();
       setIsAddOpen(false);
+      setIsSOOpen(false);
     } catch (error) {
       console.error(error);
 
@@ -261,9 +277,49 @@ const Invoice = () => {
         return showWarningToast(backendMsg);
       }
 
-      showErrorToast(
-        "Error Adding Sales Invoice"
+      showErrorToast("Error Adding Sales Invoice");
+    }
+  };
+
+  const handleSalesOrderSelect = async (soId) => {
+    try {
+      const data = await SalesOrderAPI.getSalesOrders(soId);
+      if (!data || !data.length) return;
+
+      const so = data[0];
+
+      // HEADER
+      setForm((prev) => ({
+        ...prev,
+        salesOrderId: so.so_id,
+        customerId: so.so_customer_id,
+        salesRepId: so.so_sales_rep_id,
+        billToName: so.so_bill_to_name,
+        billToAddress: so.so_bill_to_address,
+        shipToName: so.so_ship_to_name,
+        shipToAddress: so.so_ship_to_address,
+        invoiceDate: new Date().toISOString().slice(0, 10),
+        dueDate: so.so_sales_order_date,
+        shippingDate: so.so_shipping_date,
+        salesTax: so.so_sales_tax,
+        freight: so.so_freight,
+      }));
+
+      // LINE ITEMS
+      setLineItems(
+        so.items.map((i) => ({
+          item_id: i.item_id,
+          quantity: Number(i.quantity),
+          oum: i.oum,
+          item_description: i.description,
+          base_price: Number(i.unit_price),
+          unit_price: Number(i.unit_price),
+          amount: Number(i.amount),
+          pricing_formula_id: "",
+        })),
       );
+    } catch (e) {
+      showErrorToast("Failed to load Sales Order");
     }
   };
 
@@ -291,8 +347,6 @@ const Invoice = () => {
     ]);
   };
 
-
-
   const removeLineItem = (index) => {
     setLineItems((prev) =>
       prev.length > 1 ? prev.filter((_, i) => i !== index) : prev,
@@ -301,7 +355,7 @@ const Invoice = () => {
 
   const itemsSubtotal = lineItems.reduce(
     (sum, item) => sum + Number(item.amount || 0),
-    0
+    0,
   );
 
   // user-entered sales tax (%)
@@ -315,7 +369,6 @@ const Invoice = () => {
 
   const invoiceTotal = itemsSubtotal + extraSalesTaxAmount + vatAmount;
   const netDue = invoiceTotal + Number(form.freight || 0);
-
 
   useEffect(() => {
     setForm((prev) => ({
@@ -350,13 +403,19 @@ const Invoice = () => {
         keys={keys}
         data={data}
         {...tableOptions}
-        dropdownItems={[{ key: "add", label: "Add Invoice" }]}
-        onItemClick={() => setIsAddOpen(true)}
+        dropdownItems={[
+          { key: "add", label: "Add Invoice" },
+          { key: "add-so", label: "SO Invoice" },
+        ]}
+        onItemClick={(item) => {
+          if (item.key === "add") setIsAddOpen(true);
+          if (item.key === "add-so") setIsSOOpen(true);
+        }}
         onEditClick={handleViewClick}
       />
 
       {/* ADD INVOICE */}
-      <NormalModal
+      {/* <NormalModal
         open={isAddOpen}
         title="Invoice"
         width={1500}
@@ -386,6 +445,81 @@ const Invoice = () => {
           />
 
           <InvoiceTotals form={form} onChange={handleChange} vatAmount={vatAmount}
+          />
+        </div>
+      </NormalModal> */}
+      <NormalModal
+        open={isSOOpen}
+        title="SO Invoice"
+        width={1500}
+        onCancel={() => setIsSOOpen(false)}
+        onConfirm={handleSubmit}
+        confirmText="Save Invoice"
+      >
+        <div className="space-y-4">
+          {/* SALES ORDER SELECT */}
+          <FloatingSelect
+            label="Sales Order"
+            value={selectedSOId} // ✅ CONTROLLED
+            options={[
+              { value: "", label: "Select Sales Order" },
+              ...salesOrders.map((so) => ({
+                value: so.id,
+                label: so.sales_order_id,
+              })),
+            ]}
+            onChange={(e) => {
+              const soId = e.target.value;
+              setSelectedSOId(soId); // ✅ persist value
+              handleSalesOrderSelect(soId);
+            }}
+          />
+
+          {/* REUSE EXISTING UI */}
+          {/* <CustomerDetails
+            form={form}
+            customers={customers}
+            employees={employees}
+            onCustomerSelect={() => {}} // disabled
+            onChange={() => {}}
+            setForm={setForm}
+          />
+
+          <LineItemsTable
+            lineItems={lineItems}
+            inventoryItems={inventoryItems}
+            pricingFormulas={pricingFormulas}
+            onAdd={() => {}}
+            onRemove={() => {}}
+            onQtyChange={() => {}}
+            onItemChange={() => {}}
+            onPricingFormulaChange={() => {}}
+          /> */}
+
+          <CustomerDetails
+            form={form}
+            customers={customers}
+            employees={employees}
+            onCustomerSelect={handleCustomerSelect}
+            onChange={handleChange}
+            setForm={setForm}
+          />
+
+          <LineItemsTable
+            lineItems={lineItems}
+            inventoryItems={inventoryItems}
+            pricingFormulas={pricingFormulas}
+            onAdd={addLineItem}
+            onRemove={removeLineItem}
+            onQtyChange={handleQtyChange}
+            onItemChange={handleItemChange}
+            onPricingFormulaChange={handlePricingFormulaChange}
+          />
+
+          <InvoiceTotals
+            form={form}
+            onChange={handleChange}
+            vatAmount={vatAmount}
           />
         </div>
       </NormalModal>

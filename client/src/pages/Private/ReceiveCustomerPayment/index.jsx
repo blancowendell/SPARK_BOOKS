@@ -195,15 +195,15 @@ const ReceiveCustomerPayment = ({ customer }) => {
   /* =======================
      TABLE CONFIG
   ======================= */
-  const headers = ["Invoice No", "Due Date", "Amount Due", "Applied", "Pay"];
+  const headers = ["Invoice No", "Status", "Amount Due", "Created By", "Pay"];
 
-  const keys = ["invoice", "due", "amount", "applied", "pay"];
+  const keys = ["invoice", "status", "amount", "name", "pay"];
 
   const tableData = invoices.map((inv, index) => ({
     invoice: inv.si_invoice_no,
-    due: inv.due_date,
+    status: inv.payment_status,
     amount: inv.amount_due,
-    applied: inv.appliedAmount.toFixed(2),
+    name: inv.create_by,
     pay: (
       <input
         type="checkbox"
@@ -330,7 +330,7 @@ const ReceiveCustomerPayment = ({ customer }) => {
           </div>
         </div>
 
-        <Table headers={headers} keys={keys} data={tableData} />
+        <Table headers={headers} keys={keys} data={tableData} withImage />
       </div>
 
       {/* ================= ACTION ================= */}
