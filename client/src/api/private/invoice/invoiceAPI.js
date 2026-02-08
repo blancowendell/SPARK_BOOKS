@@ -14,6 +14,7 @@ const InvoiceAPI = {
   },
 
   addInvoice: async (
+    salesOrderId,
     invoiceNo,
     customerId,
     salesRepId,
@@ -34,6 +35,7 @@ const InvoiceAPI = {
       const response = await axiosInstance.post(
         "/sales_invoice/add-sales_invoice",
         {
+          salesOrderId,
           invoiceNo,
           customerId,
           salesRepId,

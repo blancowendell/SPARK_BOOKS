@@ -20,6 +20,7 @@ import InventoryHistory from "./pages/Private/InventoryHistory";
 import Customer from "./pages/Private/Customer";
 import Invoicing from "./pages/Private/Invoicing";
 import ReceiveCustomerPayment from "./pages/Private/ReceiveCustomerPayment";
+import SalesOrderApproval from "./pages/Private/SalesOrders";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
               <Route path="inventoryHistory" element={<InventoryHistory />} />
               <Route path="invoicing" element={<Invoicing />} />
               <Route path="recievingMoney" element={<ReceiveCustomerPayment />} />
+              <Route path="salesOrder" element={<SalesOrderApproval />} />
             </Route>
           </Route>
 

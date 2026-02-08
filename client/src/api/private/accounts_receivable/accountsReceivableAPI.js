@@ -20,6 +20,9 @@ const AccountsReceivableAPI = {
       throw error;
     }
   },
+
+
+  
 };  
 
 export default AccountsReceivableAPI;

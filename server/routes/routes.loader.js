@@ -6,6 +6,7 @@ module.exports = (app) => {
   var psgcRouter = require("./public/psgc.routes");
 
   var addressLocationRouter = require("./public/addressLocation.routes");
+  var salesOrderAgentRouter = require("./public/salesOrderAgent.routes");
 
   //#endregion
 
@@ -14,6 +15,7 @@ module.exports = (app) => {
   app.use("/psgc", psgcRouter);
 
   app.use("/address_location", addressLocationRouter);
+  app.use("/agent_api", salesOrderAgentRouter);
 
   //#endregion
 
@@ -49,6 +51,8 @@ module.exports = (app) => {
   var inventoryQuantityRouter = require("./private/inventoryQuantity.routes");
   var salesInvoiceRouter = require("./private/salesInvoice.routes");
   var masterSalesRepRouter = require("./private/masterSalesRep.routes");
+  var salesOrderRouter = require("./private/salesOrders.routes");
+  var accountsReceivableRouter = require("./private/accountsReceivable.routes");
   //#endregion
 
   //#region ROUTES USE PRIVATE
@@ -78,5 +82,7 @@ module.exports = (app) => {
   app.use("/inventory_quantity", inventoryQuantityRouter);
   app.use("/sales_invoice", salesInvoiceRouter);
   app.use("/master_sales_rep", masterSalesRepRouter);
+  app.use("/sales_order", salesOrderRouter);
+  app.use("/accounts_receivable", accountsReceivableRouter);
   //#endregion
 };

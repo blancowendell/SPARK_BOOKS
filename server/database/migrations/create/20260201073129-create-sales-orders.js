@@ -92,6 +92,10 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: false
       },
+      so_process_status: {
+        type: Sequelize.ENUM('APPROVED','PENDING','REJECTED','HOLD','CANCELLED'),
+        allowNull: false
+      },
       so_status: {
         type: Sequelize.ENUM('ACTIVE','INACTIVE'),
         allowNull: false

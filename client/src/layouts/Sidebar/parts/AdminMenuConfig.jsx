@@ -61,6 +61,7 @@ export const AdminMenuConfig = [
         children: [
           { key: "invoicingPanel", label: "Sales/Invoicing", link: "invoicing" },
           { key: "recievingMoneyPanel", label: "Recieving Money", link: "recievingMoney"},
+          { key: "salesOrderPanel", label: "Sales Orders", link: "salesOrder" },
           { key: "purchaseOrderPanel", label: "Purchase Orders", link: "purchaseOrder" },
         ],
       },

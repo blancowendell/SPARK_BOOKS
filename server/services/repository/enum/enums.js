@@ -1,21 +1,3 @@
-// const REQUEST = {
-//   COA: "Correction of Attendance",
-//   OVERTIME: "Overtime",
-//   LEAVE: "Leave",
-//   CA: "Cash Advance",
-//   LOAN: "Loan",
-//   OTMEAL: "Overtime Meal",
-//   HD: "Holiday OT",
-//   RD: "Rest Day OT",
-//   OB: "Official Business",
-//   UT: "Undertime",
-// };
-
-// exports.REQUEST = REQUEST;
-
-// const STAFF_HOUSE_STATUS = {};
-// exports.STAFF_HOUSE_STATUS = STAFF_HOUSE_STATUS;
-
 const STATUS_LOG = {
   ACTIVE: "ACTIVE",
   INACTIVE: "INACTIVE",
@@ -113,3 +95,43 @@ const INVENTORY_METHODS = {
 };
 
 exports.INVENTORY_METHODS = INVENTORY_METHODS;
+
+
+const PROCESS_STATUS = {
+  APPROVED: "APPROVED",
+  PENDING: "PENDING",
+  REJECTED: "REJECTED",
+  CANCELLED: "CANCELLED",
+  HOLD: "HOLD",
+};
+
+exports.PROCESS_STATUS = PROCESS_STATUS;
+
+
+const PAYMENT_METHODS = {
+  CASH: "CASH",
+  CHEQUE: "CHEQUE",
+  CREDIT_CARD: "CREDIT CARD",
+  DEBIT_CARD: "DEBIT CARD",
+  DINERS: "DINERS",
+  ONLINE: "ONLINE",
+  OTHER: "OTHER",
+};
+
+exports.PAYMENT_METHODS = PAYMENT_METHODS;
+
+
+const PAYMENT_STATUS = {
+  PAID: "PAID",
+  PARTIAL: "PARTIAL",
+  PENDING: "PENDING",
+};
+
+exports.PAYMENT_STATUS = PAYMENT_STATUS;
+
+const RUNNING_BAL = {
+  ADDITIONAL: "ADDITIONAL",
+  DEDUCTION: "DEDUCTION",
+};
+
+exports.RUNNING_BAL = RUNNING_BAL;

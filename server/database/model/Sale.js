@@ -20,6 +20,7 @@ const Sale = {
       "net_due",
       "created_at",
       "create_by",
+      "process_status",
       "status"
     ],
   selectColumns: [
@@ -40,6 +41,7 @@ const Sale = {
       "so_net_due",
       "so_created_at",
       "so_create_by",
+      "so_process_status",
       "so_status"
     ],
   selectOptionColumns: {
@@ -60,6 +62,7 @@ const Sale = {
     net_due: "so_net_due",
     created_at: "so_created_at",
     create_by: "so_create_by",
+    process_status: "so_process_status",
     status: "so_status"
   },
   updateOptionColumns: {
@@ -80,6 +83,7 @@ const Sale = {
     net_due: "net_due",
     created_at: "created_at",
     create_by: "create_by",
+    process_status: "process_status",
     status: "status"
   },
   selectDateFormatColumns: {
