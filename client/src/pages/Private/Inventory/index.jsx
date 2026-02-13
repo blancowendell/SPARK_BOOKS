@@ -313,7 +313,7 @@ const Inventory = () => {
               />
 
               <FloatingInput
-                label="Item Price"
+                label="Item Cost"
                 type="number"
                 value={itemPrice}
                 onChange={(e) => setItemPrice(e.target.value)}
